@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Game.h"
 
 using namespace std;
 int main(int argc, char const *argv[])
@@ -23,28 +24,29 @@ int main(int argc, char const *argv[])
         cout << "Enter player 2 name : " << endl;
         cin >> player2Name;
 
-        Player player1 = new Player(player1Name);
-        Player player2 = new Player(player2Name);
-        Player[] players = {player1, player2};
+        Player* pPlayer1 = new Player(player1Name);
+        Player* pPlayer2 = new Player(player2Name);
+        Player* pPlayerArray[2] = {pPlayer1, pPlayer2};
         
-        Deck deck = Deck.getDeck(); // Should be preshuffled
+        Deck* deck = new Deck(); // Should be preshuffled - should happen on init
 
         // Draw 5 cards each
         for (int i = 0; i < 5; i++)
         {
-            player1.hand+= deck.draw();
-            player2.hand+= deck.draw();
+            //TODO: Add hand to player
+            pPlayer1->hand+= deck->draw(); 
+            pPlayer2->hand+= deck->draw();
         }
-        DiscardPile discardPile = new DiscardPile();
-        TradeArea tradeArea = new TradeArea();
-        Table table =  new Table(players, deck, discardPile, tradeArea);
+        DiscardPile* pDiscardPile = new DiscardPile();
+        TradeArea* pTradeArea = new TradeArea();
+        Table* pTable =  new Table(players, deck, discardPile, tradeArea); //TODO change Table init to take references
     }
 
     bool pause = false;
 
-    // Can we create function signatures not specified in the PDF?
-    // If not we should update isEmpty in Deck.draw()
-    while (!table.deck.isEmpty)
+    // Can we create function signatures not specified in the PDF? | I think we can for sure
+    // If not we should update isEmpty in Deck.draw() | //TODO: this
+    while (!table->deck->isEmpty)
     {
         if (pause)
         {
@@ -54,7 +56,7 @@ int main(int argc, char const *argv[])
         // Each player has a turn
         for (Player player : table.players){ // make sure this is accessing the players in table memory
             cout << table;
-            player.hand+=table.deck.draw()
+            player.hand+=table.deck.draw();
 
             // again we will need to update this bool in tradeArea
             if(!table.tradeArea.isEmpty){
