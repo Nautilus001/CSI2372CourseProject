@@ -1,5 +1,7 @@
 #include "Player.h"
 
+//TODO: INCLUDE HAND
+
 Player::Player(const std::string& name) {
     // init the player with the given name
 }
