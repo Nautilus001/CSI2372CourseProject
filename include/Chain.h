@@ -5,10 +5,12 @@
 #include "Card.h"
 
 template <typename T>
-class Chain {
+class Chain {   
+private:
+    std::vector<T*>
 public:
     Chain();                                // Constructor
-    Chain& operator+=(Card* card);          // Add a card to the chain
+    Chain<T>& operator+=(Card* card);          // Add a card to the chain
     int sell() const;                       // Calculate coins earned from chain
     friend std::ostream& operator<<(std::ostream& out, const Chain<T>& chain);
 };

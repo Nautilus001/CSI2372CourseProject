@@ -5,7 +5,10 @@
 #include "Card.h"
 
 class TradeArea {
+private:
+    std::list<Card> cards;
 public:
+    bool isEmpty();
     TradeArea();
     TradeArea& operator+=(Card* card);
     bool legal(Card* card) const;

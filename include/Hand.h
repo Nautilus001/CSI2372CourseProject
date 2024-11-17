@@ -1,10 +1,12 @@
 #ifndef HAND_H
 #define HAND_H
 
-#include <list>
+#include <vector>
 #include "Card.h"
 
 class Hand {
+private:
+    std::vector<Card> cards;
 public:
     Hand();
     Hand& operator+=(Card* card);

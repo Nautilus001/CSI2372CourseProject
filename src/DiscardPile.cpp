@@ -4,7 +4,7 @@ DiscardPile::DiscardPile() {
     // init the discard pile
 }
 
-void DiscardPile::addCard(Card* card) {
+DiscardPile& DiscardPile::operator+=(Card* card) {
     // Add the given card to the top of the discard pile
 }
 

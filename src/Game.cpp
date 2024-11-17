@@ -44,9 +44,7 @@ int main(int argc, char const *argv[])
 
     bool pause = false;
 
-    // Can we create function signatures not specified in the PDF? | I think we can for sure
-    // If not we should update isEmpty in Deck.draw() | //TODO: this
-    while (!table->deck->isEmpty)
+    while (!table->deck->isEmpty())
     {
         if (pause)
         {
@@ -59,7 +57,7 @@ int main(int argc, char const *argv[])
             player.hand+=table.deck.draw();
 
             // again we will need to update this bool in tradeArea
-            if(!table.tradeArea.isEmpty){
+            if(!table.tradeArea.isEmpty()){
             
             // Stopping here, im confused about the implementation for trading
                 
