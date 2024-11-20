@@ -1,4 +1,4 @@
-#include "CardFactory.h"
+#include "../include/CardFactory.h"
 
 CardFactory::instance = nullptr;
 

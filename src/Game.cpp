@@ -82,8 +82,7 @@ int main(int argc, char const *argv[])
                         pTradeArea->trade(takeACard); // parsing should be done in this function
                     }
                 }
-                while (strcmp(takeACard, "none") != 0 && !pTradeArea->isEmpty())
-                    ; // While the player doesnt want to skip and tradeArea isnt empty
+                while (strcmp(takeACard, "none") != 0 && !pTradeArea->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
             }
 
             cout << "You played: " << player->hand.play() << endl;

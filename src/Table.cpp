@@ -1,6 +1,6 @@
-#include "Table.h"
+#include "../include/Table.h"
 
-Table::Table(Player* (&players)[2], Deck* deck, TradeArea* tradeArea, DiscardPile* discardPile) {
+Table::Table(Player **players, Deck *deck, TradeArea *tradeArea, DiscardPile *discardPile) {
     // init the table with its components
 }
 

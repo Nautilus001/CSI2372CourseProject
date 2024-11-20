@@ -1,12 +1,13 @@
 #ifndef TRADEAREA_H
 #define TRADEAREA_H
 
-#include <list>
+#include <vector>
 #include "Card.h"
+#include "Chain.h"
 
 class TradeArea {
 private:
-    std::list<Card> cards;
+    std::vector<Chain<Card*>> chains;
 public:
     bool isEmpty();
     TradeArea();

@@ -14,7 +14,7 @@ private:
     DiscardPile discardPile;
     TradeArea tradeArea;
 public:
-    Table(Player *(players)[2], Deck *deck, TradeArea *tradeArea, DiscardPile *discardPile);
+    Table(Player **players, Deck *deck, TradeArea *tradeArea, DiscardPile *discardPile);
     bool win(std::string &playerName) const;
     void printHand(bool all) const;
     friend std::ostream &operator<<(std::ostream &out, const Table &table);

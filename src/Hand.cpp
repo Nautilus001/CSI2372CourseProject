@@ -1,4 +1,4 @@
-#include "Hand.h"
+#include "../include/Hand.h"
 
 Hand::Hand() {
     // Initialize the hand
