@@ -1,12 +1,12 @@
 #include "CardFactory.h"
 
-CardFactory* CardFactory::instance = nullptr;
+CardFactory::instance = nullptr;
 
 CardFactory::CardFactory() {
     // Initialize necessary members here
 }
 
-CardFactory* CardFactory::getFactory() {
+CardFactory& CardFactory::getFactory() {
     // Return the instance of CardFactory
     if (instance == nullptr) {
         instance = new CardFactory();

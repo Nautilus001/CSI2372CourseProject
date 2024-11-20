@@ -9,7 +9,7 @@
 class Table
 {
 private:
-    Player[2] players;
+    Player players[2];
     Deck deck;
     DiscardPile discardPile;
     TradeArea tradeArea;

@@ -7,10 +7,10 @@
 
 class CardFactory {
 private:
-    static CardFactory* instance;
+    static CardFactory instance;
     CardFactory();
 public:
-    static CardFactory* getFactory();
+    static CardFactory& getFactory();
     Deck getDeck() const;
 };
 

@@ -1,9 +1,21 @@
 #include <iostream>
-#include "Game.h"
+#include <string.h>
+#include "..\include\CardFactory.h"
+#include "..\include\Table.h"
+#include "..\include\Hand.h"
 
 using namespace std;
 int main(int argc, char const *argv[])
 {
+    // set up uninitilized pointers
+    Player *player1;
+    Player *player2;
+    Player *playerArray[2] = {player1, player2};
+    Deck *pDeck;
+    DiscardPile *pDiscardPile;
+    TradeArea *pTradeArea;
+    Table *pTable = new Table(playerArray, pDeck, pTradeArea, pDiscardPile);
+
     string existingGame;
     cout << "Do you have a saved game? y/n" << endl;
     cin >> existingGame;
@@ -17,53 +29,90 @@ int main(int argc, char const *argv[])
     {
         // Setup
         string player1Name;
-        cout << "Enter player 1 name : " << endl;
+        cout << "Enter player 1 name: " << endl;
         cin >> player1Name;
 
         string player2Name;
-        cout << "Enter player 2 name : " << endl;
+        cout << "Enter player 2 name: " << endl;
         cin >> player2Name;
 
-        Player* pPlayer1 = new Player(player1Name);
-        Player* pPlayer2 = new Player(player2Name);
-        Player* pPlayerArray[2] = {pPlayer1, pPlayer2};
-        
-        Deck* deck = new Deck(); // Should be preshuffled - should happen on init
+        player1 = new Player(player1Name);
+        player2 = new Player(player2Name);
+
+        Deck d = CardFactory::getFactory().getDeck();
+        pDeck = &d;
 
         // Draw 5 cards each
         for (int i = 0; i < 5; i++)
         {
-            //TODO: Add hand to player
-            pPlayer1->hand+= deck->draw(); 
-            pPlayer2->hand+= deck->draw();
+            // Make sure creating a hand is part of player
+            player1->hand += pDeck->draw();
+            player2->hand += pDeck->draw();
         }
-        DiscardPile* pDiscardPile = new DiscardPile();
-        TradeArea* pTradeArea = new TradeArea();
-        Table* pTable =  new Table(players, deck, discardPile, tradeArea); //TODO change Table init to take references
+
+        pDiscardPile = new DiscardPile();
+        pTradeArea = new TradeArea();
     }
 
     bool pause = false;
 
-    while (!table->deck->isEmpty())
+    while (!pDeck->isEmpty())
     {
         if (pause)
         {
             // TODO: implement save to file
             break;
         }
+
         // Each player has a turn
-        for (Player player : table.players){ // make sure this is accessing the players in table memory
-            cout << table;
-            player.hand+=table.deck.draw();
+        for (Player *player : playerArray)
+        {
+            cout << *pTable;
+            player->hand += pDeck->draw();
 
-            // again we will need to update this bool in tradeArea
-            if(!table.tradeArea.isEmpty()){
-            
-            // Stopping here, im confused about the implementation for trading
-                
-            } 
+            if (!pTradeArea->isEmpty())
+            {
+                char takeACard[10] = ""; // [10] to give extra space, we might want to use a single char here
+                                         // instructions are not clear on this, I made it a string since tradeArea.trade(const std::string& beanName)                    do
+                {
+                    cout << "What card would you like to take? (\"none\" to skip)" << endl;
+                    cin >> takeACard;
+                    if (strcmp("none", takeACard) != 0)
+                    {
+                        pTradeArea->trade(takeACard); // parsing should be done in this function
+                    }
+                }
+                while (strcmp(takeACard, "none") != 0 && !pTradeArea->isEmpty())
+                    ; // While the player doesnt want to skip and tradeArea isnt empty
+            }
 
-            // TODO: finish a players turn  
+            cout << "You played: " << player->hand.play() << endl;
+
+            //   If chain is ended, cards for chain are removed and player receives coin(s).
+
+            cout << "Your top card is: " << player->hand.top() << endl;
+            cout << "Would you like to play this card? (y/n)" << endl;
+            string playACard;
+            cin >> playACard;
+            if (playACard[0] == 'y')
+            {
+                cout << "You played: " << player->hand.play() << endl;
+            }
+
+            //   If chain is ended, cards for chain are removed and player receives coin(s).
+
+            cout << "Would you like to discard a card? (y/n)" << endl;
+            string disgardACard;
+            cin >> disgardACard;
+            if (disgardACard[0] == 'y')
+            {
+                player->printHand(cout, true); // print entire hand
+                int cardToDiscard;
+                cout << "Which card will you discard? " << endl;
+                cin >> cardToDiscard;
+                *pDiscardPile += player->hand[cardToDiscard]; // We need to POP from players hand
+            }
+            // TODO: finish a players turn
         }
     }
 }
