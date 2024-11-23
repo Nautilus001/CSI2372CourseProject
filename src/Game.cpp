@@ -56,62 +56,103 @@ int main(int argc, char const *argv[])
 
     bool pause = false;
 
+    // While there are still cards on the Deck
     while (!pDeck->isEmpty())
     {
+
+        //  if pause save game to file and exit
         if (pause)
         {
             // TODO: implement save to file
             break;
         }
 
-        // Each player has a turn
+        //  For each Player
         for (Player *player : playerArray)
         {
+            //   Display Table
             cout << *pTable;
+            //   Player draws top card from Deck
             player->hand += pDeck->draw();
 
+            //   If TradeArea is not empty
+            // this is only relevant for the first turn
             if (!pTradeArea->isEmpty())
             {
-                char takeACard[10] = ""; // [10] to give extra space, we might want to use a single char here
+                //    Add bean cards from the TradeArea to chains or discard them.
+                char takeAChain[10] = ""; // [10] to give extra space, we might want to use a single char here
                                          // instructions are not clear on this, I made it a string since tradeArea.trade(const std::string& beanName)                    do
+                do
                 {
-                    cout << "What card would you like to take? (\"none\" to skip)" << endl;
-                    cin >> takeACard;
-                    if (strcmp("none", takeACard) != 0)
+                    cout << "What chain would you like to take? (\"none\" to skip)" << endl;
+                    cin >> takeAChain;
+                    if (strcmp("none", takeAChain) != 0)
                     {
-                        pTradeArea->trade(takeACard); // parsing should be done in this function
+                        Card* c = (pTradeArea->trade(takeAChain)); // parsing should be done in this function
+                        //TODO: plant chain
                     }
-                }
-                while (strcmp(takeACard, "none") != 0 && !pTradeArea->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
+                } while (strcmp(takeAChain, "none") != 0 && !pTradeArea->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
             }
 
+            //  Play topmost card from Hand.
             cout << "You played: " << player->hand.play() << endl;
 
             //   If chain is ended, cards for chain are removed and player receives coin(s).
-
             cout << "Your top card is: " << player->hand.top() << endl;
             cout << "Would you like to play this card? (y/n)" << endl;
             string playACard;
             cin >> playACard;
+
+            //   If player decides to
             if (playACard[0] == 'y')
             {
+                //    Play the now topmost card from Hand.
                 cout << "You played: " << player->hand.play() << endl;
             }
 
-            //   If chain is ended, cards for chain are removed and player receives coin(s).
+            //   TODO: If chain is ended, cards for chain are removed and player receives coin(s).
 
+            //   If player decides to
             cout << "Would you like to discard a card? (y/n)" << endl;
             string disgardACard;
             cin >> disgardACard;
             if (disgardACard[0] == 'y')
             {
+                // Show the player's full hand and player selects an arbitrary card
                 player->printHand(cout, true); // print entire hand
                 int cardToDiscard;
+
+                //    Discard the arbitrary card from the player's hand and place it on the discard pile.
                 cout << "Which card will you discard? " << endl;
                 cin >> cardToDiscard;
                 *pDiscardPile += player->hand[cardToDiscard]; // We need to POP from players hand
             }
-            // TODO: finish a players turn
+
+            //    Draw three cards from the deck and place cards in the trade area
+            cout << "The following cards are drawn:" << endl;
+            for (int i = 0; i < 3; i++)
+            {
+                Card *card = pDeck->draw();
+                cout << *card << endl;
+                *pTradeArea += card;
+            }
+
+            //   while top card of discard pile matches an existing card in the trade area
+            while (pTradeArea->legal(pDiscardPile->top()))
+            {
+                //    draw the top-most card from the discard pile and place it in the trade area
+                *pTradeArea += (pDiscardPile->pickUp());
+            }
+
+            // TODO:
+            // for all cards in the trade area
+            //     if player wants to chain the card
+            //         chain the card.
+            //     else card remains in trade area for the next player.
+
+            // Draw two cards from Deck and add the cards to the player's hand (at the back).
+            player->hand += (pDeck->draw());
+            player->hand += (pDeck->draw());
         }
     }
 }
