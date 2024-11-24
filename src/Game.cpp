@@ -81,15 +81,15 @@ int main(int argc, char const *argv[])
             {
                 //    Add bean cards from the TradeArea to chains or discard them.
                 char takeAChain[10] = ""; // [10] to give extra space, we might want to use a single char here
-                                         // instructions are not clear on this, I made it a string since tradeArea.trade(const std::string& beanName)                    do
+                                          // instructions are not clear on this, I made it a string since tradeArea.trade(const std::string& beanName)                    do
                 do
                 {
                     cout << "What chain would you like to take? (\"none\" to skip)" << endl;
                     cin >> takeAChain;
                     if (strcmp("none", takeAChain) != 0)
                     {
-                        Card* c = (pTradeArea->trade(takeAChain)); // parsing should be done in this function
-                        //TODO: plant chain
+                        Card *c = (pTradeArea->trade(takeAChain)); // parsing should be done in this function
+                        // TODO: plant chain
                     }
                 } while (strcmp(takeAChain, "none") != 0 && !pTradeArea->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
             }
@@ -154,5 +154,14 @@ int main(int argc, char const *argv[])
             player->hand += (pDeck->draw());
             player->hand += (pDeck->draw());
         }
+    }
+
+    if (player1->getNumCoins() > player2->getNumCoins())
+    {
+        cout << player1->getName() << " wins!" << endl;
+    }
+    else
+    {
+        cout << player2->getName() << " wins!" << endl;
     }
 }
