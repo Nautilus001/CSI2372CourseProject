@@ -71,12 +71,15 @@ int main(int argc, char const *argv[])
         for (Player *player : playerArray)
         {
             //   Display Table
-            cout << *pTable;
+            cout << *pTable; // This should display all the information except for the players hand
             //   Player draws top card from Deck
             player->hand += pDeck->draw();
 
+            // IMPORTANT: The code given in the PDF gives no option to buy a third field
+            //            we should give the option to here if the player has not already done so and has enough coins
+
             //   If TradeArea is not empty
-            // this is only relevant for the first turn
+            // this is only relevant for the first turn, we may want to move the long trade area logic out of main for readability
             if (!pTradeArea->isEmpty())
             {
                 //    Add bean cards from the TradeArea to chains or discard them.
@@ -88,8 +91,37 @@ int main(int argc, char const *argv[])
                     cin >> takeAChain;
                     if (strcmp("none", takeAChain) != 0)
                     {
-                        Card *c = (pTradeArea->trade(takeAChain)); // parsing should be done in this function
-                        // TODO: plant chain
+                        Card *card = pTradeArea->trade(takeAChain); // parsing should be done in this function
+
+                        // if there is an empty field
+                        if (player->getNumChains() < player->getMaxNumChains())
+                        {
+                            // for some reason the player[] operator was not overloaded correctly, tmp solution is repeated for every time we access a player's chain
+                            player->operator[](player->getNumChains()) += card; // Add the card to the player
+                        }
+                        else
+                        {
+                            bool chainTypeExists = false;
+                            // If the player already has a chain of this type
+                            for (int i = 0; i < player->getNumChains(); i++)
+                            {
+                                if (card->getName() == player->operator[](i).getName())
+                                {
+                                    chainTypeExists = true;
+                                    player->operator[](i) += card;
+                                    break;
+                                }
+                            }
+                            // If not
+                            if (!chainTypeExists)
+                            {
+                                cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
+                                int j;
+                                cin >> j;
+                                player += player->operator[](j-1).sell(); // Sell the chain
+                                player->operator[](j-1) += card;          // Add the chain to the player
+                            }
+                        }
                     }
                 } while (strcmp(takeAChain, "none") != 0 && !pTradeArea->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
             }

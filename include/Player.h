@@ -19,7 +19,7 @@ public:
     Player& operator+=(int coins);
     int getMaxNumChains() const;
     int getNumChains() const;
-    Chain<Card>& operator[](int index);
+    Chain<Card*>& operator[](int index);
     void buyThirdChain();
     void printHand(std::ostream& out, bool all) const;
     friend std::ostream& operator<<(std::ostream& out, const Player& player);
