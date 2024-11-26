@@ -92,36 +92,7 @@ int main(int argc, char const *argv[])
                     if (strcmp("none", takeAChain) != 0)
                     {
                         Card *card = pTradeArea->trade(takeAChain); // parsing should be done in this function
-
-                        // if there is an empty field
-                        if (player->getNumChains() < player->getMaxNumChains())
-                        {
-                            // for some reason the player[] operator was not overloaded correctly, tmp solution is repeated for every time we access a player's chain
-                            player->operator[](player->getNumChains()) += card; // Add the card to the player
-                        }
-                        else
-                        {
-                            bool chainTypeExists = false;
-                            // If the player already has a chain of this type
-                            for (int i = 0; i < player->getNumChains(); i++)
-                            {
-                                if (card->getName() == player->operator[](i).getName())
-                                {
-                                    chainTypeExists = true;
-                                    player->operator[](i) += card;
-                                    break;
-                                }
-                            }
-                            // If not
-                            if (!chainTypeExists)
-                            {
-                                cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
-                                int j;
-                                cin >> j;
-                                player += player->operator[](j - 1).sell(); // Sell the chain
-                                player->operator[](j - 1) += card;          // Add the chain to the player
-                            }
-                        }
+                        addCardToPlayerChain(player, card);
                     }
                 } while (strcmp(takeAChain, "none") != 0 && !pTradeArea->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
             }
@@ -131,28 +102,11 @@ int main(int argc, char const *argv[])
             while (playACard[0] == 'y')
             {
                 //    Play the topmost card from Hand.
-                cout << "You played: " << player->hand.play() << endl;
+                Card *card = player->hand.play();
+                cout << "You played: " << card << endl;
 
                 // Add to a chain
-                bool chainTypeExists = false;
-                for (int i = 0; i < player->getNumChains(); i++)
-                {
-                    if (player[i].getName() == c->getName())
-                    {
-                        player[i] += c;
-                        chainTypeExists = true;
-                        break;
-                    }
-                }
-                // Or harvest a field (this is copied code from the trading code)
-                if (!chainTypeExists)
-                {
-                    cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
-                    int j;
-                    cin >> j;
-                    player += player->operator[](j - 1).sell(); // Sell the chain
-                    player->operator[](j - 1) += c;             // Add the chain to the player
-                }
+                addCardToPlayerChain(player, card);
 
                 // if player decides to
                 cout << "Your top card is: " << player->hand.top() << endl;
@@ -211,5 +165,38 @@ int main(int argc, char const *argv[])
     else
     {
         cout << player2->getName() << " wins!" << endl;
+    }
+}
+
+addCardToPlayerChain(Player p, Card *c)
+{
+    // if there is an empty field
+    if (p->getNumChains() < p->getMaxNumChains())
+    {
+        // for some reason the player[] operator was not overloaded correctly, tmp solution is repeated for every time we access a player's chain
+        p->operator[](p->getNumChains()) += c; // Add the card to the player
+    }
+    else
+    {
+        bool chainTypeExists = false;
+        // If the player already has a chain of this type
+        for (int i = 0; i < p->getNumChains(); i++)
+        {
+            if (card->getName() == p->operator[](i).getName())
+            {
+                chainTypeExists = true;
+                p->operator[](i) += c;
+                break;
+            }
+        }
+        // If not
+        if (!chainTypeExists)
+        {
+            cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
+            int j;
+            cin >> j;
+            p += p->operator[](j - 1).sell(); // Sell the chain
+            p->operator[](j - 1) += c;        // Add the chain to the player
+        }
     }
 }
