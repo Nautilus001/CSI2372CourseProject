@@ -126,51 +126,39 @@ int main(int argc, char const *argv[])
                 } while (strcmp(takeAChain, "none") != 0 && !pTradeArea->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
             }
 
-            //  Play topmost card from Hand.
-            Card *c = player->hand.play();
-            cout << "You played: " << c << endl;
-
-            // Add to a chain
-            bool chainTypeExists = false;
-            for (int i = 0; i < player->getNumChains(); i++)
+            // First card must be played
+            string playACard = 'y';
+            while (playACard[0] == 'y')
             {
-                if (player[i].getName() == c->getName())
-                {
-                    player[i] += c;
-                    chainTypeExists = true;
-                    break;
-                }
-            }
-            // Or harvest a field (this is copied code from the trading code)
-            if (!chainTypeExists)
-            {
-                cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
-                int j;
-                cin >> j;
-                player += player->operator[](j - 1).sell(); // Sell the chain
-                player->operator[](j - 1) += c;          // Add the chain to the player
-            }
-
-            cout << "Your top card is: " << player->hand.top() << endl;
-            cout << "Would you like to play this card? (y/n)" << endl;
-
-            string playACard;
-            cin >> playACard;
-
-            //   If player decides to
-            // TODO: make sure this is a valid option
-            if (playACard[0] == 'y')
-            {
-                //    Play the now topmost card from Hand.
+                //    Play the topmost card from Hand.
                 cout << "You played: " << player->hand.play() << endl;
-            }
 
-            //   TODO: WHEN DO THE LET THE PLAYER HARVEST?
-            //  If chain is ended, cards for chain are removed and player receives coin(s).
-            cout << "Would you like to harvest a chain? (1 to " << player->getNumChains() << ")" << endl;
-            int j;
-            cin >> j;
-            player += player->operator[](j - 1).sell(); // Sell the chain
+                // Add to a chain
+                bool chainTypeExists = false;
+                for (int i = 0; i < player->getNumChains(); i++)
+                {
+                    if (player[i].getName() == c->getName())
+                    {
+                        player[i] += c;
+                        chainTypeExists = true;
+                        break;
+                    }
+                }
+                // Or harvest a field (this is copied code from the trading code)
+                if (!chainTypeExists)
+                {
+                    cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
+                    int j;
+                    cin >> j;
+                    player += player->operator[](j - 1).sell(); // Sell the chain
+                    player->operator[](j - 1) += c;             // Add the chain to the player
+                }
+
+                // if player decides to
+                cout << "Your top card is: " << player->hand.top() << endl;
+                cout << "Would you like to play this card? (y/n)" << endl;
+                cin >> playACard;
+            }
 
             //   If player decides to
             cout << "Would you like to discard a card? (y/n)" << endl;
