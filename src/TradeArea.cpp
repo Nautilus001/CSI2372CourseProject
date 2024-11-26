@@ -1,7 +1,11 @@
-#include "TradeArea.h"
+#include "../include/TradeArea.h"
 
 TradeArea::TradeArea() {
     // init the trade area
+}
+
+bool TradeArea::isEmpty(){
+    return cards.empty();
 }
 
 TradeArea& TradeArea::operator+=(Card* card) {

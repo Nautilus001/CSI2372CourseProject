@@ -3,10 +3,11 @@
 
 #include <list>
 #include "Card.h"
+#include "Chain.h"
 
 class TradeArea {
 private:
-    std::list<Card> cards;
+    std::list<Card*> cards;
 public:
     bool isEmpty();
     TradeArea();

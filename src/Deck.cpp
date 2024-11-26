@@ -1,7 +1,11 @@
-#include "Deck.h"
+#include "../include/Deck.h"
 
 Deck::Deck() {
     // Constructor logic (initializing the deck, etc)
+}
+
+bool Deck::isEmpty(){
+    return cards.empty();
 }
 
 Card* Deck::draw() {

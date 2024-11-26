@@ -1,4 +1,4 @@
-#include "DiscardPile.h"
+#include "../include/DiscardPile.h"
 
 DiscardPile::DiscardPile() {
     // init the discard pile
