@@ -5,7 +5,7 @@ TradeArea::TradeArea() {
 }
 
 bool TradeArea::isEmpty(){
-    return chains.empty();
+    return cards.empty();
 }
 
 TradeArea& TradeArea::operator+=(Card* card) {

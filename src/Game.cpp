@@ -5,6 +5,40 @@
 #include "..\include\Hand.h"
 
 using namespace std;
+
+void addCardToPlayerChain(Player *p, Card *c)
+{
+    // if there is an empty field
+    if (p->getNumChains() < p->getMaxNumChains())
+    {
+        // for some reason the player[] operator was not overloaded correctly, tmp solution is repeated for every time we access a player's chain
+        p->operator[](p->getNumChains()) += c; // Add the card to the player
+    }
+    else
+    {
+        bool chainTypeExists = false;
+        // If the player already has a chain of this type
+        for (int i = 0; i < p->getNumChains(); i++)
+        {
+            if (c->getName() == p->operator[](i).getName())
+            {
+                chainTypeExists = true;
+                p->operator[](i) += c;
+                break;
+            }
+        }
+        // If not
+        if (!chainTypeExists)
+        {
+            cout << "You must sell a chain, which field will you harvest? (1," << p->getNumChains() << ")" << endl;
+            int j;
+            cin >> j;
+            p += p->operator[](j - 1).sell(); // Sell the chain
+            p->operator[](j - 1) += c;        // Add the chain to the player
+        }
+    }
+}
+
 int main(int argc, char const *argv[])
 {
     // set up uninitilized pointers
@@ -98,8 +132,8 @@ int main(int argc, char const *argv[])
             }
 
             // First card must be played
-            string playACard = 'y';
-            while (playACard[0] == 'y')
+            char playACard = 'y'; // could make this more robust using char array
+            while (playACard == 'y')
             {
                 //    Play the topmost card from Hand.
                 Card *card = player->hand.play();
@@ -165,38 +199,5 @@ int main(int argc, char const *argv[])
     else
     {
         cout << player2->getName() << " wins!" << endl;
-    }
-}
-
-addCardToPlayerChain(Player p, Card *c)
-{
-    // if there is an empty field
-    if (p->getNumChains() < p->getMaxNumChains())
-    {
-        // for some reason the player[] operator was not overloaded correctly, tmp solution is repeated for every time we access a player's chain
-        p->operator[](p->getNumChains()) += c; // Add the card to the player
-    }
-    else
-    {
-        bool chainTypeExists = false;
-        // If the player already has a chain of this type
-        for (int i = 0; i < p->getNumChains(); i++)
-        {
-            if (card->getName() == p->operator[](i).getName())
-            {
-                chainTypeExists = true;
-                p->operator[](i) += c;
-                break;
-            }
-        }
-        // If not
-        if (!chainTypeExists)
-        {
-            cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
-            int j;
-            cin >> j;
-            p += p->operator[](j - 1).sell(); // Sell the chain
-            p->operator[](j - 1) += c;        // Add the chain to the player
-        }
     }
 }
