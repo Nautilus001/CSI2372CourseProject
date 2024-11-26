@@ -118,8 +118,8 @@ int main(int argc, char const *argv[])
                                 cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
                                 int j;
                                 cin >> j;
-                                player += player->operator[](j-1).sell(); // Sell the chain
-                                player->operator[](j-1) += card;          // Add the chain to the player
+                                player += player->operator[](j - 1).sell(); // Sell the chain
+                                player->operator[](j - 1) += card;          // Add the chain to the player
                             }
                         }
                     }
@@ -127,22 +127,50 @@ int main(int argc, char const *argv[])
             }
 
             //  Play topmost card from Hand.
-            cout << "You played: " << player->hand.play() << endl;
+            Card *c = player->hand.play();
+            cout << "You played: " << c << endl;
 
-            //   If chain is ended, cards for chain are removed and player receives coin(s).
+            // Add to a chain
+            bool chainTypeExists = false;
+            for (int i = 0; i < player->getNumChains(); i++)
+            {
+                if (player[i].getName() == c->getName())
+                {
+                    player[i] += c;
+                    chainTypeExists = true;
+                    break;
+                }
+            }
+            // Or harvest a field (this is copied code from the trading code)
+            if (!chainTypeExists)
+            {
+                cout << "You must sell a chain, which field will you harvest? (1," << player->getNumChains() << ")" << endl;
+                int j;
+                cin >> j;
+                player += player->operator[](j - 1).sell(); // Sell the chain
+                player->operator[](j - 1) += c;          // Add the chain to the player
+            }
+
             cout << "Your top card is: " << player->hand.top() << endl;
             cout << "Would you like to play this card? (y/n)" << endl;
+
             string playACard;
             cin >> playACard;
 
             //   If player decides to
+            // TODO: make sure this is a valid option
             if (playACard[0] == 'y')
             {
                 //    Play the now topmost card from Hand.
                 cout << "You played: " << player->hand.play() << endl;
             }
 
-            //   TODO: If chain is ended, cards for chain are removed and player receives coin(s).
+            //   TODO: WHEN DO THE LET THE PLAYER HARVEST?
+            //  If chain is ended, cards for chain are removed and player receives coin(s).
+            cout << "Would you like to harvest a chain? (1 to " << player->getNumChains() << ")" << endl;
+            int j;
+            cin >> j;
+            player += player->operator[](j - 1).sell(); // Sell the chain
 
             //   If player decides to
             cout << "Would you like to discard a card? (y/n)" << endl;
