@@ -39,6 +39,28 @@ void addCardToPlayerChain(Player *p, Card *c)
     }
 }
 
+void takeCardFromTradeArea(Player *p, TradeArea *ta)
+{
+    //   If TradeArea is not empty
+    // this is only relevant for the first turn, we may want to move the long trade area logic out of main for readability
+    if (!ta->isEmpty())
+    {
+        //    Add bean cards from the TradeArea to chains or discard them.
+        char takeAChain[10] = ""; // [10] to give extra space, we might want to use a single char here
+                                  // instructions are not clear on this, I made it a string since tradeArea.trade(const std::string& beanName)                    do
+        do
+        {
+            cout << "What chain would you like to take? (\"none\" to skip)" << endl;
+            cin >> takeAChain;
+            if (strcmp("none", takeAChain) != 0)
+            {
+                Card *card = ta->trade(takeAChain); // parsing should be done in this function
+                addCardToPlayerChain(p, card);
+            }
+        } while (strcmp(takeAChain, "none") != 0 && !ta->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
+    }
+}
+
 int main(int argc, char const *argv[])
 {
     // set up uninitilized pointers
@@ -110,26 +132,9 @@ int main(int argc, char const *argv[])
             player->hand += pDeck->draw();
 
             // IMPORTANT: The code given in the PDF gives no option to buy a third field
-            //            we should give the option to here if the player has not already done so and has enough coins
+            //            we should give the option to here if the player has not already done so AND has enough coins
 
-            //   If TradeArea is not empty
-            // this is only relevant for the first turn, we may want to move the long trade area logic out of main for readability
-            if (!pTradeArea->isEmpty())
-            {
-                //    Add bean cards from the TradeArea to chains or discard them.
-                char takeAChain[10] = ""; // [10] to give extra space, we might want to use a single char here
-                                          // instructions are not clear on this, I made it a string since tradeArea.trade(const std::string& beanName)                    do
-                do
-                {
-                    cout << "What chain would you like to take? (\"none\" to skip)" << endl;
-                    cin >> takeAChain;
-                    if (strcmp("none", takeAChain) != 0)
-                    {
-                        Card *card = pTradeArea->trade(takeAChain); // parsing should be done in this function
-                        addCardToPlayerChain(player, card);
-                    }
-                } while (strcmp(takeAChain, "none") != 0 && !pTradeArea->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
-            }
+            takeCardFromTradeArea(player, pTradeArea);
 
             // First card must be played
             char playACard = 'y'; // could make this more robust using char array
@@ -180,10 +185,8 @@ int main(int argc, char const *argv[])
                 *pTradeArea += (pDiscardPile->pickUp());
             }
 
-            // TODO:
-            // for all cards in the trade area
             //     if player wants to chain the card
-            //         chain the card.
+            takeCardFromTradeArea(player, pTradeArea);
             //     else card remains in trade area for the next player.
 
             // Draw two cards from Deck and add the cards to the player's hand (at the back).
