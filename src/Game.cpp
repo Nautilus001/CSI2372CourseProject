@@ -195,7 +195,8 @@ int main(int argc, char const *argv[])
         }
     }
 
-    if (pTable->win(player1->getName()))
+    string p1Name = player1->getName();
+    if (pTable->win(p1Name))
     {
         cout << player1->getName() << " wins!" << endl;
     }
