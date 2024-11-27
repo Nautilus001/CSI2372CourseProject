@@ -8,9 +8,7 @@
 class CardFactory
 {
 private:
-    static CardFactory *instancePtr;
     CardFactory();
-
 public:
     static CardFactory &getFactory();
     Deck getDeck() const;
