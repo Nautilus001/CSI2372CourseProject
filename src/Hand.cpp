@@ -1,4 +1,4 @@
-#include "Hand.h"
+#include "../include/Hand.h"
 
 Hand::Hand() {
     // Initialize the hand
@@ -20,7 +20,7 @@ Card* Hand::top() const {
 }
 
 Card* Hand::operator[](int index) {
-    // Return the card at the given index
+    // POP the card at the given index
     return nullptr; // Placeholder return value
 }
 

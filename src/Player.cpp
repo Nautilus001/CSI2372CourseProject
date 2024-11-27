@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "../include/Player.h"
 
 //TODO: INCLUDE HAND
 
@@ -31,10 +31,9 @@ int Player::getNumChains() const {
     return 0;
 }
 
-Chain<Card>& Player::operator[](int index) {
+Chain<Card*>& Player::operator[](int index) {
     // Return the chain at the given index
-    static Chain<Card> dummy;
-    return dummy;
+    return chains[index];
 }
 
 void Player::buyThirdChain() {
