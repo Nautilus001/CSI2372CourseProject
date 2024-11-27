@@ -5,12 +5,14 @@
 #include "Card.h"
 #include "Deck.h"
 
-class CardFactory {
+class CardFactory
+{
 private:
-    static CardFactory instance;
+    static CardFactory *instancePtr;
     CardFactory();
+
 public:
-    static CardFactory& getFactory();
+    static CardFactory &getFactory();
     Deck getDeck() const;
 };
 
