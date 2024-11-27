@@ -195,7 +195,8 @@ int main(int argc, char const *argv[])
         }
     }
 
-    if (player1->getNumCoins() > player2->getNumCoins())
+    string p1Name = player1->getName();
+    if (pTable->win(p1Name))
     {
         cout << player1->getName() << " wins!" << endl;
     }

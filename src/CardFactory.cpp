@@ -1,20 +1,20 @@
 #include "../include/CardFactory.h"
 
-CardFactory::instance = nullptr;
-
-CardFactory::CardFactory() {
+CardFactory::CardFactory()
+{
     // Initialize necessary members here
 }
 
-CardFactory& CardFactory::getFactory() {
+CardFactory &CardFactory::getFactory()
+{
     // Return the instance of CardFactory
-    if (instance == nullptr) {
-        instance = new CardFactory();
-    }
+    static CardFactory instance;
     return instance;
 }
 
-Deck CardFactory::getDeck() const {
+Deck CardFactory::getDeck() const
+{
     // Create and return a NEW Deck object
+    // TODO: shuffle
     return Deck();
 }

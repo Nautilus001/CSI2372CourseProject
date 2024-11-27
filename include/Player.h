@@ -13,7 +13,7 @@ private:
     std::vector<Chain<Card*>> chains; // Using a vector access to .size
 public:
     Hand hand;
-    Player(const std::string& name);
+    Player(const std::string& name = "");
     std::string getName() const;
     int getNumCoins() const;
     Player& operator+=(int coins);
