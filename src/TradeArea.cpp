@@ -1,34 +1,63 @@
 #include "../include/TradeArea.h"
 
 TradeArea::TradeArea() {
-    // init the trade area
+    std::list<Chain<Card*>*> chains;
 }
 
 bool TradeArea::isEmpty(){
-    return cards.empty();
+    return chains.empty();
 }
 
 TradeArea& TradeArea::operator+=(Card* card) {
-    // Add the card to the trade area
+    if(legal(card)) {
+        for (auto& chain : chains) {
+            if(chain->getName() == card->getName()){
+                chain->addCard(card);
+                break;
+            }
+        }
     return *this;
+    }
 }
 
 bool TradeArea::legal(Card* card) const {
-    // Check if the given card can be added based oin rules
+    for (const auto& chain : chains) {
+        if(chain->getName() == card->getName()){
+            return true;
+        }
+    }
     return false;
 }
 
-Card* TradeArea::trade(const std::string& beanName) {
-    // Remove and return a card matching the given bean name
-    return nullptr;
+template <typename T>
+Chain<T> TradeArea::trade(const std::string& beanName) {
+     for (auto it = chains.begin(); it != chains.end(); ++it) {
+        auto chain = *it;
+        if (chain->getName() == beanName) {
+            Chain<T> returnChain = dynamic_cast<Chain<T>*>(chain);
+            if (returnChain) {
+                chains.erase(it);
+                return returnChain;
+            }
+            else {
+                throw IllegalTypeException();
+            }
+        }
+    }
+    throw std::runtime_error("No matching chain found for the given bean name");
 }
 
 int TradeArea::numCards() const {
-    // Return the num of cards in the trade area
-    return 0;
+    int count = 0;
+    for (const auto& chain : chains) {
+        count += chain->numCards();
+    }
+    return count;
 }
 
 std::ostream& operator<<(std::ostream& out, const TradeArea& tradeArea) {
-    // Print all cards in trade aresa
+    for (const auto& chain : tradeArea.chains) {
+        out << *chain << " ";  // Assuming operator<< is overloaded for Chain
+    }
     return out;
 }

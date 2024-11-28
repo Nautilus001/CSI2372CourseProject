@@ -6,7 +6,9 @@
 
 Card* Deck::draw() {
     if (!empty()) {
-        return front();
+        Card* front =  this->front();
+        erase(begin());
+        return front;
     }
     return nullptr;
 }

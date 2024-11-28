@@ -1,6 +1,7 @@
 #include "../include/CardFactory.h"
 #include <random>
 #include <algorithm>
+#include "CardFactory.h"
 
 CardFactory* CardFactory::instance = nullptr;
 
@@ -36,6 +37,31 @@ CardFactory::CardFactory() {
     }
     for (int i = 0; i < 6; ++i) {
         deck.push_back(new Garden());
+    }
+}
+
+Card* CardFactory::createCard(const std::string& beanType) {
+    if (beanType == "Blue") {
+        return new Blue(); 
+    } else if (beanType == "Chili") {
+        return new Chili(); 
+    } else if (beanType == "Garden") {
+        return new Garden();
+    } else if (beanType == "Green") {
+        return new Green();
+    } else if (beanType == "Red") {
+        return new Red(); 
+    } else if (beanType == "Soy") {
+        return new Soy(); 
+    } else if (beanType == "Black") {
+        return new Black(); 
+    } else if (beanType == "Stink") {
+        return new Stink(); 
+    }
+
+    // Add more cases for other card types
+    else {
+        throw std::invalid_argument("Unknown bean type: " + beanType);
     }
 }
 

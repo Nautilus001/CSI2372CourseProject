@@ -1,28 +1,36 @@
 #include "../include/DiscardPile.h"
 
 DiscardPile::DiscardPile() {
-    // init the discard pile
+    std::vector<Card*> cards;
 }
 
 DiscardPile& DiscardPile::operator+=(Card* card) {
-    // Add the given card to the top of the discard pile
+    cards.push_back(card);
+    return *this;
 }
 
 Card* DiscardPile::pickUp() {
-    // Remove and return the top card from discard pile
+    if (!cards.empty()) {
+        Card* front =  cards.front();
+        cards.erase(cards.begin());
+        return front;
+    }
     return nullptr;
 }
 
 Card* DiscardPile::top() const {
-    // Return the top card without removing it
+    if (!cards.empty()) {
+        return cards.front();
+    }
     return nullptr;
 }
 
 void DiscardPile::print(std::ostream& out) const {
-    // Print cards in the discard pile to the output stream
+    Card* topCard = top();
+    topCard->print(out);
 }
 
 std::ostream& operator<<(std::ostream& out, const DiscardPile& pile) {
-    // Print only the top card of the discard pile
+    pile.print(out);
     return out;
 }

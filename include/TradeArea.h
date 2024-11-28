@@ -7,13 +7,14 @@
 
 class TradeArea {
 private:
-    std::list<Card*> cards;
+    std::list<Chain<Card*>*> chains;
 public:
     bool isEmpty();
     TradeArea();
     TradeArea& operator+=(Card* card);
     bool legal(Card* card) const;
-    Card* trade(const std::string& beanName);
+    template <typename T>
+    Chain<T> trade(const std::string& beanName);
     int numCards() const;
     friend std::ostream& operator<<(std::ostream& out, const TradeArea& tradeArea);
 };
