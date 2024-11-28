@@ -1,5 +1,6 @@
 #include "../include/Player.h"
 #include "../include/Hand.h"
+#include "Player.h"
 //TODO: INCLUDE HAND
 
 Player::Player(const std::string& name) {
@@ -31,8 +32,12 @@ int Player::getNumChains() const {
     return this->chains.size();
 }
 
-Chain<Card*>& Player::operator[](int index) {
-    return *this->chains[index];
+Chain<Card*>& Player::operator[](int i){
+    if (i >= 0 && i < this->chains.size()) {
+        return *this->chains[i];
+    } else {
+        throw std::out_of_range("Index out of range");
+    }
 }
 
 void Player::buyThirdChain() {
@@ -41,23 +46,24 @@ void Player::buyThirdChain() {
     }
 }
 
-void Player::printHand(std::ostream& out, bool all) const {
+std::ostream& Player::printHand(std::ostream& out, bool all) const {
     if(all){
         out << this->hand;
     }
+    return out;
+}
+
+std::ostream& Player::printFields(std::ostream& out) const {
+    for (auto& chain : this->chains) {
+        out << chain;
+    }
+    return out;
 }
 
 std::ostream& operator<<(std::ostream& out, const Player& player) {
-    out << "Player: " << player.name << "\n";
-    out << "Coins: " << player.coins << "\n";
-    out << "Chains: " << player.getNumChains() << "/" << player.getMaxNumChains() << "\n";
-    
-    out << "Hand: " << player.hand << "\n";
-
-    out << "Chains: \n";
-    for (const auto& chain : player.chains) {
-        out << *chain << "\n";
-    }
-
+    out << "Player: " << player.getName() << "\n";
+    out << "\tCoins: " << player.getNumCoins() << "\n";
+    out << "\tFields: " << player.getNumChains() << "/" << player.getMaxNumChains() << "\n";
+    player.printFields(out);
     return out;
 }

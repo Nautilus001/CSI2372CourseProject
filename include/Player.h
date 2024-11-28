@@ -22,8 +22,9 @@ public:
     int getNumChains() const;
     Chain<Card*>& operator[](int index);
     void buyThirdChain();
-    void printHand(std::ostream& out, bool all) const;
-    friend std::ostream& operator<<(std::ostream& out, const Player& player);
+    std::ostream& printHand(std::ostream& out, bool all) const;
+    std::ostream &printFields(std::ostream &out) const;
+    friend std::ostream &operator<<(std::ostream &out, const Player &player);
 };
 
 #endif

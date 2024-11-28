@@ -13,7 +13,6 @@ public:
     bool isEmpty();
     TradeArea& operator+=(Card* card);
     bool legal(Card* card) const;
-    template <typename T>
     Card* trade(const std::string& beanName);
     int numCards() const;
     friend std::ostream& operator<<(std::ostream& out, const TradeArea& tradeArea);

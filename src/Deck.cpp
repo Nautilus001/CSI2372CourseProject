@@ -17,12 +17,6 @@ bool Deck::isEmpty() const {
     return empty();
 }
 
-Deck::~Deck() {
-    for (auto card : *this) {
-        delete card;
-    }
-}
-
 std::ostream& operator<<(std::ostream& out, const Deck& deck) {
     out << "Deck contents: \n";
     for (const auto& card : deck) {

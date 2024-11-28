@@ -3,6 +3,7 @@
 #include "..\include\CardFactory.h"
 #include "..\include\Table.h"
 #include "..\include\Hand.h"
+#include "..\include\Player.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ void addCardToPlayerChain(Player *p, Card *c)
     if (p->getNumChains() < p->getMaxNumChains())
     {
         // for some reason the player[] operator was not overloaded correctly, tmp solution is repeated for every time we access a player's chain
-        p->operator[](p->getNumChains()) += c; // Add the card to the player
+        p->operator[](p->getNumChains()) += c;
     }
     else
     {
@@ -30,7 +31,14 @@ void addCardToPlayerChain(Player *p, Card *c)
         // If not
         if (!chainTypeExists)
         {
-            cout << "You must sell a chain, which field will you harvest? (1," << p->getNumChains() << ")" << endl;
+            cout << "You must sell a chain, which field will you harvest? (1";
+            if (p->getNumChains() > 1) {
+                cout << ", 2";
+            }
+            if (p->getNumChains() > 2) {
+                cout << ", 3";
+            }
+            cout << ")" << endl;
             int j;
             cin >> j;
             p += p->operator[](j - 1).sell(); // Sell the chain
@@ -46,18 +54,25 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
     if (!ta->isEmpty())
     {
         //    Add bean cards from the TradeArea to chains or discard them.
-        char takeAChain[10] = ""; // [10] to give extra space, we might want to use a single char here
-                                  // instructions are not clear on this, I made it a string since tradeArea.trade(const std::string& beanName)                    do
+        string selectedChain = "";
         do
         {
             cout << "What chain would you like to take? (\"none\" to skip)" << endl;
-            cin >> takeAChain;
-            if (strcmp("none", takeAChain) != 0)
-            {
-                Card *card = ta->trade(takeAChain); // parsing should be done in this function
-                addCardToPlayerChain(p, card);
+            cin >> selectedChain;
+
+            if (selectedChain != "none") {
+                try {
+                    auto chain = ta->trade(selectedChain);
+                    if (chain) { 
+                        addCardToPlayerChain(p, chain);  
+                    } else {
+                        std::cout << "Trade failed: no card found for the selected chain." << std::endl;
+                    }
+                } catch (const std::exception& e) {
+                    std::cout << "Error: " << e.what() << std::endl;  // Handle trade failure
+                }
             }
-        } while (strcmp(takeAChain, "none") != 0 && !ta->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
+        } while (selectedChain != "none" && !ta->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
     }
 }
 

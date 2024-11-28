@@ -1,7 +1,6 @@
 #include "../include/CardFactory.h"
 #include <random>
 #include <algorithm>
-#include "CardFactory.h"
 
 CardFactory* CardFactory::instance = nullptr;
 

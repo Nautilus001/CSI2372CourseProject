@@ -1,5 +1,9 @@
 #include "../include/TradeArea.h"
 
+TradeArea::TradeArea() {
+    std::list<Card*> cards;
+}
+
 bool TradeArea::isEmpty(){
     return this->cards.empty();
 }
@@ -21,7 +25,6 @@ bool TradeArea::legal(Card* card) const {
     return false;
 }
 
-template <typename T>
 Card* TradeArea::trade(const std::string& beanName) {
     for (auto it = cards.begin(); it != cards.end(); ++it) {
         if ((*it)->getName() == beanName) {

@@ -33,8 +33,9 @@ void Table::printHand(bool all) const {
 
 std::ostream& operator<<(std::ostream& out, const Table& table) {
     out << "Players: \n";
+    
     for (int i = 0; i < 2; ++i) {
-        out << table.players[i] << "\n";
+        out << "Player " << (i + 1) << ": " << table.players[i] << "\n";
     }
 
     out << "Deck: \n";
