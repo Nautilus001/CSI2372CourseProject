@@ -1,7 +1,7 @@
 #ifndef GREEN_H
 #define GREEN_H
 
-#include "Card.h"
+#include "../Card.h"
 
 class Green : public Card {
 public:

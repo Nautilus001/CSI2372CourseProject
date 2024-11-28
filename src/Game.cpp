@@ -95,7 +95,7 @@ int main(int argc, char const *argv[])
         player1 = new Player(player1Name);
         player2 = new Player(player2Name);
 
-        Deck d = CardFactory::getFactory().getDeck();
+        Deck d = CardFactory::getFactory()->getDeck();
         pDeck = &d;
 
         // Draw 5 cards each

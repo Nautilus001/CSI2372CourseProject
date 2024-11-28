@@ -4,14 +4,11 @@
 #include <vector>
 #include "Card.h"
 
-class Deck {
-private:
-    std::vector<Card> cards;
+class Deck : public std::vector<Card*> {
 public:
-    bool isEmpty();
-    Deck();                                
-    Card* draw();                          
-    friend std::ostream& operator<<(std::ostream& out, const Deck& deck);
+   Deck() = default;
+   Card* draw();
+   bool isEmpty();
 };
 
 #endif
