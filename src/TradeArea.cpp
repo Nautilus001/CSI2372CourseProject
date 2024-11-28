@@ -1,28 +1,20 @@
 #include "../include/TradeArea.h"
 
-TradeArea::TradeArea() {
-    std::list<Chain<Card*>*> chains;
-}
-
 bool TradeArea::isEmpty(){
-    return chains.empty();
+    return this->cards.empty();
 }
 
 TradeArea& TradeArea::operator+=(Card* card) {
     if(legal(card)) {
-        for (auto& chain : chains) {
-            if(chain->getName() == card->getName()){
-                chain->addCard(card);
-                break;
-            }
-        }
-    return *this;
+        cards.push_back(card);
     }
+    return *this;
 }
 
+
 bool TradeArea::legal(Card* card) const {
-    for (const auto& chain : chains) {
-        if(chain->getName() == card->getName()){
+    for(const auto& elem : this->cards){
+        if(elem->getName() == card->getName()){
             return true;
         }
     }
@@ -30,34 +22,24 @@ bool TradeArea::legal(Card* card) const {
 }
 
 template <typename T>
-Chain<T> TradeArea::trade(const std::string& beanName) {
-     for (auto it = chains.begin(); it != chains.end(); ++it) {
-        auto chain = *it;
-        if (chain->getName() == beanName) {
-            Chain<T> returnChain = dynamic_cast<Chain<T>*>(chain);
-            if (returnChain) {
-                chains.erase(it);
-                return returnChain;
-            }
-            else {
-                throw IllegalTypeException();
-            }
+Card* TradeArea::trade(const std::string& beanName) {
+    for (auto it = cards.begin(); it != cards.end(); ++it) {
+        if ((*it)->getName() == beanName) {
+            Card* card = *it;
+            cards.erase(it);
+            return card;
         }
     }
-    throw std::runtime_error("No matching chain found for the given bean name");
+    throw std::runtime_error("No matching card found for the given bean name");
 }
 
 int TradeArea::numCards() const {
-    int count = 0;
-    for (const auto& chain : chains) {
-        count += chain->numCards();
-    }
-    return count;
+    return this->cards.size();
 }
 
 std::ostream& operator<<(std::ostream& out, const TradeArea& tradeArea) {
-    for (const auto& chain : tradeArea.chains) {
-        out << *chain << " ";  // Assuming operator<< is overloaded for Chain
+    for (const auto& card : tradeArea.cards) {
+        out << *card << " ";
     }
     return out;
 }

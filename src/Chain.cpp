@@ -34,34 +34,11 @@ Chain<T>& Chain<T>::operator+=(Card* card) {
 }
 
 template <typename T>
-void Chain<T>::print(std::ostream& os) const {
-    os << T().getName() << " ";
-    for (const auto& card : cards) {
-        os << card.print();
-    }
-}
-
-template <typename T>
 std::ostream& operator<<(std::ostream& out, const Chain<T>& chain) {
     out << T().getName();
     for (const T* card : chain.cards) {
-        card->print(out);
+        out << *card;
     }
 
     return out;
-}
-
-template <typename T>
-std::string getName() {
-    return front().getName();
-}
-
-template <typename T>
-void addCard(T* card) {
-    cards.push_back(card);  // Calls push_back() on the vector to add the card
-}
-
-template <typename T>
-int Chain<T>::numCards() {
-    return cards.size();
 }

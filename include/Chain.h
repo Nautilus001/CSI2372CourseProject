@@ -20,12 +20,8 @@ public:
     Chain(std::istream& is, const CardFactory* factory);    // Constructor - to get from file
     Chain<T>& operator+=(Card* card);        
     int sell();
-    void print(std::ostream &os) const;
     template <typename U>
     friend std::ostream &operator<<(std::ostream &out, const Chain<T> &chain);
-    std::string getName();
-    void addCard(Card* card);
-    int numCards();
 };
 
 #endif
