@@ -10,7 +10,8 @@ class Player {
 private:
     std::string name;
     int coins;
-    std::vector<Chain<Card*>> chains; // Using a vector access to .size
+    int maxChains;
+    std::vector<Chain<Card*>*> chains; // Using a vector access to .size
 public:
     Hand hand;
     Player(const std::string& name = "");

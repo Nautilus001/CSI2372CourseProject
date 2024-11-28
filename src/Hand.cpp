@@ -1,30 +1,39 @@
 #include "../include/Hand.h"
 
-Hand::Hand() {
-    // Initialize the hand
-}
-
 Hand& Hand::operator+=(Card* card) {
-    // Add given card to the back of the hand
+    cards.push_back(card);
     return *this;
 }
 
 Card* Hand::play() {
-    // Remove and returnr the top card from the hand
-    return nullptr; // Placeholder return value
+    if (!cards.empty()) {
+        Card* front =  cards.front();
+        cards.erase(cards.begin());
+        return front;
+    }
+    return nullptr;
 }
 
 Card* Hand::top() const {
-    // Return the top card without removing it
-    return nullptr; // Placeholder return value
+    if (!cards.empty()) {
+        Card* front =  cards.front();
+        return front;
+    }
+    return nullptr;
 }
 
 Card* Hand::operator[](int index) {
-    // POP the card at the given index
-    return nullptr; // Placeholder return value
+    if (index < 0 || index >= cards.size()) {
+        throw std::out_of_range("Index out of range");
+    }
+    Card* card = cards[index];
+    cards.erase(cards.begin() + index);
+    return card;
 }
 
 std::ostream& operator<<(std::ostream& out, const Hand& hand) {
-    // Print all cards
+    for (const auto& card : hand.cards) {
+        out << "Hand: " << card->getName() << " ";  // Prints the name of the card
+    }
     return out;
 }

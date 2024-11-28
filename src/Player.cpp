@@ -1,50 +1,66 @@
 #include "../include/Player.h"
-
+#include "../include/Hand.h"
 //TODO: INCLUDE HAND
 
 Player::Player(const std::string& name) {
-    // init the player with the given name
+    this->name = name;
+    this->coins = 0;
+    this->chains;
+    this->maxChains = 2;  
+    this->hand;  
 }
 
 std::string Player::getName() const {
-    // Return the player
-    return "";
+    return this->name;
 }
 
 int Player::getNumCoins() const {
-    // Return the number of coins the player has
-    return 0; // Placeholder return value
+    return this->coins;
 }
 
 Player& Player::operator+=(int coins) {
-    // Add coins to the player's total
+    this->coins += coins;
     return *this;
 }
 
 int Player::getMaxNumChains() const {
-    // Return the max number of chains the player can have
-    return 0; 
+    return this->maxChains; 
 }
 
 int Player::getNumChains() const {
-    // Return the current number of chains the player has
-    return 0;
+    return this->chains.size();
 }
 
 Chain<Card*>& Player::operator[](int index) {
-    // Return the chain at the given index
-    return chains[index];
+    return *this->chains[index];
 }
 
 void Player::buyThirdChain() {
-    // let the player to buy a third chain if they have enough coins
+    if(this->getMaxNumChains() != 3){
+        this->maxChains = 3;
+    }
 }
 
 void Player::printHand(std::ostream& out, bool all) const {
-    // Print either the top card or the entire hand (use all flag)
+    if(all){
+        out << this->hand;
+    }
 }
 
 std::ostream& operator<<(std::ostream& out, const Player& player) {
-    // Print the player's details
+    // Print player's name and coins
+    out << "Player: " << player.name << "\n";
+    out << "Coins: " << player.coins << "\n";
+    out << "Chains: " << player.getNumChains() << "/" << player.getMaxNumChains() << "\n";
+    
+    // Optionally print the player's hand (if the second parameter is true, for example)
+    out << "Hand: " << player.hand << "\n"; // Assuming hand has a suitable operator<<
+
+    // Optionally print chains if you want
+    out << "Chains: \n";
+    for (const auto& chain : player.chains) {
+        out << *chain << "\n"; // Assuming Chain has a suitable operator<<
+    }
+
     return out;
 }
