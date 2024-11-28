@@ -48,18 +48,15 @@ void Player::printHand(std::ostream& out, bool all) const {
 }
 
 std::ostream& operator<<(std::ostream& out, const Player& player) {
-    // Print player's name and coins
     out << "Player: " << player.name << "\n";
     out << "Coins: " << player.coins << "\n";
     out << "Chains: " << player.getNumChains() << "/" << player.getMaxNumChains() << "\n";
     
-    // Optionally print the player's hand (if the second parameter is true, for example)
-    out << "Hand: " << player.hand << "\n"; // Assuming hand has a suitable operator<<
+    out << "Hand: " << player.hand << "\n";
 
-    // Optionally print chains if you want
     out << "Chains: \n";
     for (const auto& chain : player.chains) {
-        out << *chain << "\n"; // Assuming Chain has a suitable operator<<
+        out << *chain << "\n";
     }
 
     return out;
