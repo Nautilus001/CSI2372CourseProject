@@ -9,10 +9,10 @@
 class Table
 {
 private:
-    Player players[2];
-    Deck deck;
-    DiscardPile discardPile;
-    TradeArea tradeArea;
+    Player* players[2];
+    Deck* deck;
+    DiscardPile* discardPile;
+    TradeArea* tradeArea;
 public:
     Table(Player **players, Deck *deck, TradeArea *tradeArea, DiscardPile *discardPile);
     bool win(std::string &playerName) const;

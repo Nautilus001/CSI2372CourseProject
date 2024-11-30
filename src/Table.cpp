@@ -2,21 +2,21 @@
 
 Table::Table(Player **players, Deck *deck, TradeArea *tradeArea, DiscardPile *discardPile) {
     // Initialize players
-    this->players[0] = *players[0]; // Player 1
-    this->players[1] = *players[1]; // Player 2
+    this->players[0] = players[0]; // Player 1
+    this->players[1] = players[1]; // Player 2
 
-    this->deck = *deck;
-    this->discardPile = *discardPile;
-    this->tradeArea = *tradeArea;
+    this->deck = deck;
+    this->discardPile = discardPile;
+    this->tradeArea = tradeArea;
 }
 
 bool Table::win(std::string& playerName) const {
-    if (deck.isEmpty()) {
-        if (players[0].getNumCoins() > players[1].getNumCoins()) {
-            playerName = players[0].getName();
+    if (deck->isEmpty()) {
+        if (players[0]->getNumCoins() > players[1]->getNumCoins()) {
+            playerName = players[0]->getName();
             return true;
-        } else if (players[1].getNumCoins() > players[0].getNumCoins()) {
-            playerName = players[1].getName();
+        } else if (players[1]->getNumCoins() > players[0]->getNumCoins()) {
+            playerName = players[1]->getName();
             return true;
         } else {
             playerName = "";
