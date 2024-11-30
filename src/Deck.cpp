@@ -2,7 +2,6 @@
 #include <memory>
 #include <random>
 #include <algorithm>
-#include "Deck.h"
 
 Card* Deck::draw() {
     if (!empty()) {

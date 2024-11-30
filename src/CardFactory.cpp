@@ -1,6 +1,14 @@
 #include "../include/CardFactory.h"
 #include <random>
 #include <algorithm>
+#include "../include/beans/Blue.h"
+#include "../include/beans/Black.h"
+#include "../include/beans/Chili.h"
+#include "../include/beans/Garden.h"
+#include "../include/beans/Green.h"
+#include "../include/beans/Red.h"
+#include "../include/beans/Soy.h"
+#include "../include/beans/Stink.h"
 
 CardFactory* CardFactory::instance = nullptr;
 

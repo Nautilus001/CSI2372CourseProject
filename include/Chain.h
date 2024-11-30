@@ -22,6 +22,7 @@ public:
             throw IllegalTypeException();
         } 
         this->cards.push_back(static_cast<T>(card));
+        return *this;
     }
 
     int sell() {

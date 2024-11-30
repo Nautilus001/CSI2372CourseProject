@@ -1,6 +1,5 @@
 #include "../include/Player.h"
 #include "../include/Hand.h"
-#include "Player.h"
 //TODO: INCLUDE HAND
 
 Player::Player(const std::string& name) {

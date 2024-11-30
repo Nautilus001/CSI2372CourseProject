@@ -5,15 +5,14 @@
 #include <vector>
 #include "Card.h"
 #include "Deck.h"
-#include "beans/Black.h"
-#include "beans/Blue.h"
-#include "beans/Chili.h"
-#include "beans/Garden.h"
-#include "beans/Green.h"
-#include "beans/Red.h"
-#include "beans/Soy.h"
-#include "beans/Stink.h"
-
+#include "../include/beans/Blue.h"
+#include "../include/beans/Black.h"
+#include "../include/beans/Chili.h"
+#include "../include/beans/Garden.h"
+#include "../include/beans/Green.h"
+#include "../include/beans/Red.h"
+#include "../include/beans/Soy.h"
+#include "../include/beans/Stink.h"
 
 class CardFactory
 {
