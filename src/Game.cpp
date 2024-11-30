@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string.h>
-#include "..\include\CardFactory.h"
-#include "..\include\Table.h"
-#include "..\include\Hand.h"
-#include "..\include\Player.h"
+#include "CardFactory.h"
+#include "Table.h"
+#include "Hand.h"
+#include "Player.h"
 
 using namespace std;
 
@@ -78,13 +78,14 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
 
 int main(int argc, char const *argv[])
 {
+    cout<<"IN";
     // set up uninitilized pointers
-    Player *player1;
-    Player *player2;
+    Player *player1 = nullptr;
+    Player *player2 = nullptr;
     Player *playerArray[2] = {player1, player2};
-    Deck *pDeck;
-    DiscardPile *pDiscardPile;
-    TradeArea *pTradeArea;
+    Deck *pDeck = nullptr;
+    DiscardPile *pDiscardPile = nullptr;
+    TradeArea *pTradeArea = nullptr;
     Table *pTable = new Table(playerArray, pDeck, pTradeArea, pDiscardPile);
 
     string existingGame;

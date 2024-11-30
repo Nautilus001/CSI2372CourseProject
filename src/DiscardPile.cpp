@@ -1,4 +1,4 @@
-#include "../include/DiscardPile.h"
+#include "DiscardPile.h"
 
 DiscardPile::DiscardPile() {
     std::vector<Card*> cards;

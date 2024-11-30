@@ -1,4 +1,4 @@
-#include "../include/TradeArea.h"
+#include "TradeArea.h"
 
 TradeArea::TradeArea() {
     std::list<Card*> cards;

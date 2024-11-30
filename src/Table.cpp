@@ -1,4 +1,4 @@
-#include "../include/Table.h"
+#include "Table.h"
 
 Table::Table(Player **players, Deck *deck, TradeArea *tradeArea, DiscardPile *discardPile) {
     // Initialize players

@@ -1,4 +1,4 @@
-#include "../include/Hand.h"
+#include "Hand.h"
 
 Hand& Hand::operator+=(Card* card) {
     cards.push_back(card);

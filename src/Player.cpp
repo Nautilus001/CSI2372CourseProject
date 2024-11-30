@@ -1,6 +1,5 @@
-#include "../include/Player.h"
-#include "../include/Hand.h"
-//TODO: INCLUDE HAND
+#include "Player.h"
+#include "Hand.h"
 
 Player::Player(const std::string& name) {
     this->name = name;

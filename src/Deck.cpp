@@ -1,4 +1,4 @@
-#include "../include/Deck.h"
+#include "Deck.h"
 #include <memory>
 #include <random>
 #include <algorithm>
