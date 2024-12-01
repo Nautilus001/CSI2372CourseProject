@@ -46,3 +46,7 @@ std::ostream &operator<<(std::ostream &out, const Hand &hand)
     }
     return out;
 }
+
+bool Hand::empty(){
+    return this->cards.empty();
+}

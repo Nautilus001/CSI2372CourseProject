@@ -131,8 +131,7 @@ int main(int argc, char const *argv[])
         playerArray.push_back(player1);
         playerArray.push_back(player2);
 
-        Deck d = cardFactory->getDeck();
-        pDeck = &d;
+        pDeck = cardFactory->getDeck();
 
         // Draw 5 cards each
         for (int i = 0; i < 5; i++)
@@ -164,21 +163,21 @@ int main(int argc, char const *argv[])
         for (Player *player : playerArray)
         {
             // Display player info
-        //    cout << *player;
+            //    cout << *player;
 
             //   Display Table
             cout << *pTable; // This should display all the information except for the players hand
             //   Player draws top card from Deck
             player->hand += pDeck->draw();
 
-// IMPORTANT: TODO: The code given in the PDF gives no option to buy a third field
+            // IMPORTANT: TODO: The code given in the PDF gives no option to buy a third field
             //            we should give the option to here if the player has not already done so AND has enough coins
 
             takeCardFromTradeArea(player, pTradeArea);
 
             // First card must be played
             char playACard = 'y'; // could make this more robust using char array
-            while (playACard == 'y')
+            while (playACard == 'y' && !player->hand.empty())
             {
                 //    Play the topmost card from Hand.
                 Card *card = player->hand.play();
@@ -187,10 +186,13 @@ int main(int argc, char const *argv[])
                 // Add to a chain
                 addCardToPlayerChain(player, card);
 
-                // if player decides to
-                cout << "Your top card is: " << player->hand.top() << endl;
-                cout << "Would you like to play this card? (y/n)" << endl;
-                cin >> playACard;
+                if (!player->hand.empty())
+                {
+                    // if player decides to
+                    cout << "Your top card is: " << *(player->hand.top()) << endl;
+                    cout << "Would you like to play this card? (y/n)" << endl;
+                    cin >> playACard;
+                }
             }
 
             //   If player decides to

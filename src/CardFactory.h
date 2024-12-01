@@ -17,14 +17,13 @@
 class CardFactory
 {
 private:
-    static CardFactory* instance;
+    static CardFactory *instance;
     Deck deck;
 public:
-    static CardFactory* getFactory();
+    static CardFactory *getFactory();
     CardFactory();
     Card *createCard(const std::string &beanType);
-    Deck &getDeck();
-    void shuffleDeck();
+    Deck *getDeck();
 };
 
 #endif
