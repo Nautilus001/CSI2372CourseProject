@@ -23,7 +23,7 @@ public:
     static CardFactory *getFactory();
     CardFactory();
     Card *createCard(const std::string &beanType);
-    Deck *getDeck();
+    Deck getDeck();
 };
 
 #endif

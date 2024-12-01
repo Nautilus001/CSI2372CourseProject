@@ -72,10 +72,10 @@ Card* CardFactory::createCard(const std::string& beanType) {
     }
 }
 
-Deck* CardFactory::getDeck() {
+Deck CardFactory::getDeck() {
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(deck.begin(), deck.end(), g);
-    return &deck;
+    return deck;
 }
 

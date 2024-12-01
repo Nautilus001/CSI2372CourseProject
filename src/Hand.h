@@ -15,6 +15,7 @@ public:
     Card* operator[](int index);
     friend std::ostream& operator<<(std::ostream& out, const Hand& hand);
     bool empty();
+    int size();
 };
 
 #endif

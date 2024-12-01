@@ -44,9 +44,16 @@ std::ostream &operator<<(std::ostream &out, const Hand &hand)
     {
         out << "(" << *card << ")" << card->getName() << ", "; // Prints the name of the card
     }
+    out << std::endl;
     return out;
 }
 
-bool Hand::empty(){
+bool Hand::empty()
+{
     return this->cards.empty();
+}
+
+int Hand::size()
+{
+    return this->cards.size();
 }

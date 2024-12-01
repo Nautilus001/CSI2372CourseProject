@@ -10,7 +10,6 @@ using namespace std;
 
 void addCardToPlayerChain(Player *p, Card *c)
 {
-    return;
     // if there is an empty field
     if (p->getNumChains() < p->getMaxNumChains())
     {
@@ -131,7 +130,9 @@ int main(int argc, char const *argv[])
         playerArray.push_back(player1);
         playerArray.push_back(player2);
 
-        pDeck = cardFactory->getDeck();
+        // need to keep this deck in memory
+        static Deck deck = cardFactory->getDeck();
+        pDeck = &deck;
 
         // Draw 5 cards each
         for (int i = 0; i < 5; i++)
@@ -163,9 +164,10 @@ int main(int argc, char const *argv[])
         for (Player *player : playerArray)
         {
             // Display player info
-            //    cout << *player;
+            cout << *player;
 
             //   Display Table
+            // TODO: check if tradeArea and Disguard are printing correctly
             cout << *pTable; // This should display all the information except for the players hand
             //   Player draws top card from Deck
             player->hand += pDeck->draw();
@@ -195,24 +197,32 @@ int main(int argc, char const *argv[])
                 }
             }
 
-            //   If player decides to
-            cout << "Would you like to discard a card? (y/n)" << endl;
-            string disgardACard;
-            cin >> disgardACard;
-            if (disgardACard[0] == 'y')
+            // If the player has card(s) in their hand
+            if (!player->hand.empty())
             {
                 // Show the player's full hand and player selects an arbitrary card
+                cout << "Your hand: ";
                 player->printHand(cout, true); // print entire hand
-                int cardToDiscard;
 
-                //    Discard the arbitrary card from the player's hand and place it on the discard pile.
-                cout << "Which card will you discard? " << endl;
-                cin >> cardToDiscard;
-                *pDiscardPile += player->hand[cardToDiscard]; // We need to POP from players hand
+                //   If player decides to
+                cout << "Would you like to discard a card? (y/n)" << endl;
+                string disgardACard;
+                cin >> disgardACard;
+                if (disgardACard[0] == 'y')
+                {
+
+                    //    Discard the arbitrary card from the player's hand and place it on the discard pile.
+                    int cardToDiscard;
+                    cout << "Which card will you discard? 1 to " << player->hand.size() << endl;
+                    cin >> cardToDiscard;
+                    *pDiscardPile += player->hand[cardToDiscard - 1]; // We need to POP from players hand
+                    cout << "Your hand: ";
+                    player->printHand(cout, true); // print entire hand
+                }
             }
 
             //    Draw three cards from the deck and place cards in the trade area
-            cout << "The following cards are drawn:" << endl;
+            cout << "The following cards are drawn and added to Trade Area:" << endl;
             for (int i = 0; i < 3; i++)
             {
                 Card *card = pDeck->draw();
@@ -234,6 +244,7 @@ int main(int argc, char const *argv[])
             // Draw two cards from Deck and add the cards to the player's hand (at the back).
             player->hand += (pDeck->draw());
             player->hand += (pDeck->draw());
+            cout << "You drew 2 cards and ended your turn" << endl;
         }
     }
 
