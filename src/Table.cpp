@@ -7,9 +7,9 @@ Table::Table(std::vector<Player *> players, Deck *deck, TradeArea *tradeArea, Di
     this->players.push_back(players[0]); // Player 1
     this->players.push_back(players[1]); // Player 2
 
-    this->deck = *deck;
-    this->discardPile = *discardPile;
-    this->tradeArea = *tradeArea;
+    this->deck = deck;
+    this->discardPile = discardPile;
+    this->tradeArea = tradeArea;
 }
 
 bool Table::win(std::string& playerName) const {
@@ -17,6 +17,8 @@ bool Table::win(std::string& playerName) const {
         if (players[0]->getNumCoins() > players[1]->getNumCoins()) {
             playerName = players[0]->getName();
             return true;
+        } else if (players[1]->getNumCoins() > players[0]->getNumCoins()) {
+            playerName = players[1]->getName();
         } else if (players[1]->getNumCoins() > players[0]->getNumCoins()) {
             playerName = players[1]->getName();
             return true;
