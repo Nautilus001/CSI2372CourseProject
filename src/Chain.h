@@ -24,7 +24,9 @@ public:
         this->cards.push_back(static_cast<T>(card));
         return *this;
     }
-
+    bool empty() const{
+        return cards.empty();
+    }
     int sell() {
         if (this->cards.empty()) return 0;
         int numCards = this->cards.size();

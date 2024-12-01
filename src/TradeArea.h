@@ -11,6 +11,7 @@ private:
 public:
     TradeArea();
     bool isEmpty();
+    std::vector<Card *> getCards() const;
     TradeArea& operator+=(Card* card);
     bool legal(Card* card) const;
     Card* trade(const std::string& beanName);

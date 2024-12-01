@@ -1,6 +1,7 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <vector>
 #include "Player.h"
 #include "Deck.h"
 #include "DiscardPile.h"
@@ -9,14 +10,15 @@
 class Table
 {
 private:
-    Player players[2];
+    std::vector<Player*> players;
     Deck deck;
     DiscardPile discardPile;
     TradeArea tradeArea;
 public:
-    Table(Player **players, Deck *deck, TradeArea *tradeArea, DiscardPile *discardPile);
+    Table(std::vector<Player *> players, Deck *deck, TradeArea *tradeArea, DiscardPile *discardPile);
     bool win(std::string &playerName) const;
     void printHand(bool all) const;
+    std::vector<std::string> getPlayerNames() const;    
     friend std::ostream &operator<<(std::ostream &out, const Table &table);
 };
 

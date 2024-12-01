@@ -40,9 +40,17 @@ int TradeArea::numCards() const {
     return this->cards.size();
 }
 
+std::vector<Card *> TradeArea::getCards() const {
+    std::vector<Card *> cardVector;
+    for (auto& card : this->cards) {
+        cardVector.push_back(card);
+    }
+    return cardVector;
+}
+
 std::ostream& operator<<(std::ostream& out, const TradeArea& tradeArea) {
-    for (const auto& card : tradeArea.cards) {
-        out << *card << " ";
+    for (auto& card : tradeArea.getCards()) {
+        card->print(out);
     }
     return out;
 }

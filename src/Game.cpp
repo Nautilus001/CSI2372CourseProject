@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <vector>
 #include "CardFactory.h"
 #include "Table.h"
 #include "Hand.h"
@@ -9,22 +10,30 @@ using namespace std;
 
 void addCardToPlayerChain(Player *p, Card *c)
 {
+    cout << "enter addCTPC" << endl;
+    cout << "chain status: " << p->getNumChains() << "/" << p->getMaxNumChains() << endl;
     // if there is an empty field
     if (p->getNumChains() < p->getMaxNumChains())
     {
-        // for some reason the player[] operator was not overloaded correctly, tmp solution is repeated for every time we access a player's chain
+        cout << "current chains: " << p->getNumChains() << endl;
+        
         p->operator[](p->getNumChains()) += c;
+        cout << "added to chain" << endl;
+        //TODO: Edge case where they dont have max chain, but also already have a chain of this type
     }
     else
     {
+        cout << "at max chains: " << endl;
         bool chainTypeExists = false;
         // If the player already has a chain of this type
         for (int i = 0; i < p->getNumChains(); i++)
         {
             if (c->getName() == p->operator[](i).getName())
             {
+                cout << "natching chain found" << endl;
                 chainTypeExists = true;
                 p->operator[](i) += c;
+                cout << "added" << endl;
                 break;
             }
         }
@@ -45,14 +54,17 @@ void addCardToPlayerChain(Player *p, Card *c)
             p->operator[](j - 1) += c;        // Add the chain to the player
         }
     }
+    cout << "done addCTPC" << endl;
 }
 
 void takeCardFromTradeArea(Player *p, TradeArea *ta)
 {
+    cout << "enter takeCardFromTradeArea" << endl;
     //   If TradeArea is not empty
     // this is only relevant for the first turn, we may want to move the long trade area logic out of main for readability
     if (!ta->isEmpty())
     {
+        cout << "ta is not empty" <<endl;
         //    Add bean cards from the TradeArea to chains or discard them.
         string selectedChain = "";
         do
@@ -74,19 +86,21 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
             }
         } while (selectedChain != "none" && !ta->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
     }
+    cout << "ta is empty" << endl;
 }
 
 int main(int argc, char const *argv[])
 {
-    cout<<"IN";
+
     // set up uninitilized pointers
+    CardFactory* cardFactory = new CardFactory();
     Player *player1 = nullptr;
     Player *player2 = nullptr;
-    Player *playerArray[2] = {player1, player2};
+    vector<Player *> playerArray;
     Deck *pDeck = nullptr;
     DiscardPile *pDiscardPile = nullptr;
     TradeArea *pTradeArea = nullptr;
-    Table *pTable = new Table(playerArray, pDeck, pTradeArea, pDiscardPile);
+    Table *pTable = nullptr;
 
     string existingGame;
     cout << "Do you have a saved game? y/n" << endl;
@@ -96,9 +110,11 @@ int main(int argc, char const *argv[])
     {
         // load from file.....
         // TODO: Implement save and load functions if we have time
+
     }
     else
     {
+        cout << "begin setup" << endl;
         // Setup
         string player1Name;
         cout << "Enter player 1 name: " << endl;
@@ -110,13 +126,16 @@ int main(int argc, char const *argv[])
 
         player1 = new Player(player1Name);
         player2 = new Player(player2Name);
+        playerArray.push_back(player1);
+        playerArray.push_back(player2);
 
-        Deck d = CardFactory::getFactory()->getDeck();
+        Deck d = cardFactory->getDeck();
         pDeck = &d;
 
         // Draw 5 cards each
         for (int i = 0; i < 5; i++)
         {
+            cout << i;
             // Make sure creating a hand is part of player
             player1->hand += pDeck->draw();
             player2->hand += pDeck->draw();
@@ -124,6 +143,9 @@ int main(int argc, char const *argv[])
 
         pDiscardPile = new DiscardPile();
         pTradeArea = new TradeArea();
+        cout << "making a table" << endl;
+        pTable = new Table(playerArray, pDeck, pTradeArea, pDiscardPile);
+        cout << "end setup" << endl;
     }
 
     bool pause = false;
@@ -131,6 +153,7 @@ int main(int argc, char const *argv[])
     // While there are still cards on the Deck
     while (!pDeck->isEmpty())
     {
+        cout << "deck is not empty" << endl;
 
         //  if pause save game to file and exit
         if (pause)
@@ -142,6 +165,7 @@ int main(int argc, char const *argv[])
         //  For each Player
         for (Player *player : playerArray)
         {
+            cout << "player turn" << endl;
             //   Display Table
             cout << *pTable; // This should display all the information except for the players hand
             //   Player draws top card from Deck
@@ -158,9 +182,10 @@ int main(int argc, char const *argv[])
             {
                 //    Play the topmost card from Hand.
                 Card *card = player->hand.play();
-                cout << "You played: " << card << endl;
+                cout << "You played: " << *card << endl;
 
                 // Add to a chain
+                cout << "call to add" << endl;
                 addCardToPlayerChain(player, card);
 
                 // if player decides to

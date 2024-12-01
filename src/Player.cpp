@@ -1,13 +1,12 @@
 #include "Player.h"
 #include "Hand.h"
 
-Player::Player(const std::string& name) {
-    this->name = name;
-    this->coins = 0;
-    this->chains;
-    this->maxChains = 2;  
-    this->hand;  
-}
+Player::Player(const std::string name)
+    : name(name), 
+      coins(0), 
+      chains(3), 
+      maxChains(2), 
+      hand() {}
 
 std::string Player::getName() const {
     return this->name;
@@ -27,15 +26,28 @@ int Player::getMaxNumChains() const {
 }
 
 int Player::getNumChains() const {
-    return this->chains.size();
+    int chainCount = 0;
+
+    for (const auto& chain : this->chains) {
+        if (chain != nullptr && !chain->empty()) {
+            ++chainCount;
+        }
+    }
+
+    return chainCount;
 }
 
 Chain<Card*>& Player::operator[](int i){
+    std::cout << "operator called" << std::endl;
     if (i >= 0 && i < this->chains.size()) {
-        return *this->chains[i];
-    } else {
-        throw std::out_of_range("Index out of range");
+        std::cout << "returning chain: " << i << std::endl;
+        if(chains[i] != nullptr){
+            return *this->chains[i];
+        } else {
+            std::cout << "chain uninitialized" << std::endl;
+        }
     }
+    throw std::out_of_range("Index out of range");
 }
 
 void Player::buyThirdChain() {

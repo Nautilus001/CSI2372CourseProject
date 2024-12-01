@@ -3,8 +3,10 @@
 
 #include <string>
 #include <Vector>
+#include <optional>
 #include "Hand.h"
 #include "Chain.h"
+#include "ChainBase.h"
 
 class Player {
 private:
@@ -14,7 +16,7 @@ private:
     std::vector<Chain<Card*>*> chains; // Using a vector access to .size
 public:
     Hand hand;
-    Player(const std::string& name = "");
+    Player(const std::string name = "");
     std::string getName() const;
     int getNumCoins() const;
     Player& operator+=(int coins);

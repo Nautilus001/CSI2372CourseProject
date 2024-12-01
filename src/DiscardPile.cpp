@@ -26,11 +26,13 @@ Card* DiscardPile::top() const {
 }
 
 void DiscardPile::print(std::ostream& out) const {
-    Card* topCard = top();
-    topCard->print(out);
+    for (auto& card : this->cards) {
+        card->print(out);
+    }
+    out << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& out, const DiscardPile& pile) {
-    pile.print(out);
+    out << pile.top();
     return out;
 }

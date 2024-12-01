@@ -17,9 +17,8 @@ bool Deck::isEmpty() const {
 }
 
 std::ostream& operator<<(std::ostream& out, const Deck& deck) {
-    out << "Deck contents: \n";
     for (const auto& card : deck) {
-        out << *card << "\n";
+        out << *card;
     }
     return out;
 }
