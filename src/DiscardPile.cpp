@@ -22,7 +22,7 @@ Card* DiscardPile::top() const {
     if (!cards.empty()) {
         return cards.front();
     }
-    return nullptr;
+    return nullptr; // This will print as a 0 when there are no cards in the pile
 }
 
 void DiscardPile::print(std::ostream& out) const {

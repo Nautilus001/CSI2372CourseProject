@@ -13,7 +13,7 @@ private:
     std::string name;
     int coins;
     int maxChains;
-    std::vector<Chain<Card*>*> chains; // Using a vector access to .size
+    Chain<Card*>* chains[3];
 public:
     Hand hand;
     Player(const std::string name = "");

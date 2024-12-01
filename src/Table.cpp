@@ -34,7 +34,6 @@ void Table::printHand(bool all) const {
 }
 
 std::vector<std::string> Table::getPlayerNames() const{
-    std::cout << "getPlayerNames()" << std::endl;
     std::vector<std::string> names;
     names.push_back(this->players[0]->getName());
     names.push_back(this->players[1]->getName());
@@ -44,12 +43,15 @@ std::vector<std::string> Table::getPlayerNames() const{
 std::ostream& operator<<(std::ostream& out, const Table& table) {
     std::vector<std::string> names = table.getPlayerNames();
     
-    for (int i = 0; i < 2; i++) {
-        out << "Player " << (i + 1) << ": " << names[i] << "\n";
-    }
 
-    out << "Deck: \n";
-    out << "    " << table.deck << "\n";
+    // We dont need to print these (keeping as comments for testing)
+
+    // for (int i = 0; i < 2; i++) {
+    //     out << "Player " << (i + 1) << ": " << names[i] << "\n";
+    // }
+
+    // out << "Deck: \n";
+    // out << "    " << table.deck << "\n";
 
     out << "Discard Pile: \n";
     out << "    " << table.discardPile << "\n";
