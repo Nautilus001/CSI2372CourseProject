@@ -1,50 +1,90 @@
-#include "../include/Player.h"
+#include "Player.h"
+#include "Hand.h"
 
-//TODO: INCLUDE HAND
+Player::Player(const std::string name)
+    : name(name),
+      coins(0),
+      maxChains(2),
+      hand() {}
 
-Player::Player(const std::string& name) {
-    // init the player with the given name
+std::string Player::getName() const
+{
+    return this->name;
 }
 
-std::string Player::getName() const {
-    // Return the player
-    return "";
+int Player::getNumCoins() const
+{
+    return this->coins;
 }
 
-int Player::getNumCoins() const {
-    // Return the number of coins the player has
-    return 0; // Placeholder return value
-}
-
-Player& Player::operator+=(int coins) {
-    // Add coins to the player's total
+Player &Player::operator+=(int coins)
+{
+    this->coins += coins;
     return *this;
 }
 
-int Player::getMaxNumChains() const {
-    // Return the max number of chains the player can have
-    return 0; 
+int Player::getMaxNumChains() const
+{
+    return this->maxChains;
 }
 
-int Player::getNumChains() const {
-    // Return the current number of chains the player has
-    return 0;
+int Player::getNumChains() const
+{
+    int chainCount = 0;
+
+    for (const auto &chain : this->chains)
+    {
+        if (chain != nullptr && !chain->empty())
+        {
+            ++chainCount;
+        }
+    }
+
+    return chainCount;
 }
 
-Chain<Card*>& Player::operator[](int index) {
-    // Return the chain at the given index
-    return chains[index];
+Chain<Card *> &Player::operator[](int i)
+{
+    if (i > getNumChains())
+    {
+        throw std::out_of_range("Index out of range");
+    }
+
+    return *this->chains[i];
 }
 
-void Player::buyThirdChain() {
-    // let the player to buy a third chain if they have enough coins
+void Player::buyThirdChain()
+{
+    if (this->getMaxNumChains() != 3)
+    {
+        this->maxChains = 3;
+    }
 }
 
-void Player::printHand(std::ostream& out, bool all) const {
-    // Print either the top card or the entire hand (use all flag)
+std::ostream &Player::printHand(std::ostream &out, bool all) const
+{
+    if (all)
+    {
+        out << this->hand;
+    }
+    return out;
 }
 
-std::ostream& operator<<(std::ostream& out, const Player& player) {
-    // Print the player's details
+std::ostream &Player::printFields(std::ostream &out) const
+{
+    for (auto &chain : this->chains)
+    {
+        out << chain;
+    }
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &out, const Player &player)
+{
+    out << "Player: " << player.getName() << "\n";
+    out << "\tHand: " << player.hand << "\n";
+    out << "\tCoins: " << player.getNumCoins() << "\n";
+    out << "\tFields: " << player.getNumChains() << "/" << player.getMaxNumChains() << "\n";
+    player.printFields(out);
     return out;
 }

@@ -1,4 +1,4 @@
-#include "beans/Soy.h"
+#include "Soy.h"
 
 // Override getCardsPerCoin
 int Soy::getCardsPerCoin(int cards) const {

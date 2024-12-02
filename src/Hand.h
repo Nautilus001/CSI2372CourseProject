@@ -6,14 +6,16 @@
 
 class Hand {
 private:
-    std::vector<Card> cards;
+    std::vector<Card*> cards;
 public:
-    Hand();
+    Hand() = default;
     Hand& operator+=(Card* card);
     Card* play();
     Card* top() const;
     Card* operator[](int index);
     friend std::ostream& operator<<(std::ostream& out, const Hand& hand);
+    bool empty();
+    int size();
 };
 
 #endif

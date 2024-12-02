@@ -1,4 +1,4 @@
-#include "beans/Black.h"
+#include "Black.h"
 
 // Override getCardsPerCoin
 int Black::getCardsPerCoin(int cards) const {

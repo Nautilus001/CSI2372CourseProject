@@ -1,4 +1,4 @@
-#include "beans/Stink.h"
+#include "Stink.h"
 
 // Override getCardsPerCoin
 int Stink::getCardsPerCoin(int cards) const {

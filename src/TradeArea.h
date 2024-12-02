@@ -9,8 +9,9 @@ class TradeArea {
 private:
     std::list<Card*> cards;
 public:
-    bool isEmpty();
     TradeArea();
+    bool isEmpty();
+    std::vector<Card *> getCards() const;
     TradeArea& operator+=(Card* card);
     bool legal(Card* card) const;
     Card* trade(const std::string& beanName);

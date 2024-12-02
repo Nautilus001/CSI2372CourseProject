@@ -1,4 +1,4 @@
-#include "beans/Garden.h"
+#include "Garden.h"
 
 // Override getCardsPerCoin
 int Garden::getCardsPerCoin(int cards) const {

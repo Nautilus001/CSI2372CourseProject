@@ -1,4 +1,4 @@
-#include "beans/Green.h"
+#include "Green.h"
 
 // Override getCardsPerCoin
 int Green::getCardsPerCoin(int cards) const {

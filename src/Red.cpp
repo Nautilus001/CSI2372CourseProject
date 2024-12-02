@@ -1,4 +1,4 @@
-#include "beans/Red.h"
+#include "Red.h"
 
 // Override getCardsPerCoin
 int Red::getCardsPerCoin(int cards) const {

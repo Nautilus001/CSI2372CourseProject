@@ -1,19 +1,29 @@
-#include "../include/Deck.h"
+#include "Deck.h"
+#include <memory>
+#include <random>
+#include <algorithm>
 
-Deck::Deck() {
-    // Constructor logic (initializing the deck, etc)
-}
-
-bool Deck::isEmpty(){
-    return cards.empty();
-}
-
-Card* Deck::draw() {
-    // draw a card from the deck
+Card *Deck::draw()
+{
+    if (!empty())
+    {
+        Card *card = this->back();
+        this->pop_back();
+        return card;
+    }
     return nullptr;
 }
 
-std::ostream& operator<<(std::ostream& out, const Deck& deck) {
-    // Logic to print deck
+bool Deck::isEmpty() const
+{
+    return empty();
+}
+
+std::ostream &operator<<(std::ostream &out, const Deck &deck)
+{
+    for (const auto &card : deck)
+    {
+        out << *card;
+    }
     return out;
 }

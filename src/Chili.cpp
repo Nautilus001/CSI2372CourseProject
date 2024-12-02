@@ -1,4 +1,4 @@
-#include "beans/Chili.h"
+#include "Chili.h"
 
 // Override getCardsPerCoin
 int Chili::getCardsPerCoin(int cards) const {

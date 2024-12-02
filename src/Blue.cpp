@@ -1,4 +1,4 @@
-#include "beans/Blue.h"
+#include "Blue.h"
 
 // Override getCardsPerCoin
 int Blue::getCardsPerCoin(int cards) const {
