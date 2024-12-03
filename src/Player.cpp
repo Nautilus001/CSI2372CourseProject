@@ -5,7 +5,8 @@ Player::Player(const std::string name)
     : name(name),
       coins(0),
       maxChains(2),
-      hand() {}
+      hand() {
+      }
 
 std::string Player::getName() const
 {
