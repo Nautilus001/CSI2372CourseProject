@@ -65,7 +65,15 @@ std::ostream &operator<<(std::ostream &out, const Chain<T> &chain) {
             out << *card << " ";
         }
     }
-    return out;   
+    return out;
+}
+
+template <typename T>
+std::string getName(T *t)
+{
+    // TODO:
+    // std::string s = typeid(*t).name(); 
+    // return;
 }
 
 #endif

@@ -10,99 +10,114 @@ using namespace std;
 
 void addCardToPlayerChain(Player *p, Card *c)
 {
-    if (p == nullptr || c == nullptr) {
+    if (p == nullptr || c == nullptr)
+    {
         cout << "Invalid player or card" << endl;
         return;
     }
     // if there is no existing field
-    if (p->getNumChains() == 0) {
+    if (p->getNumChains() == 0)
+    {
         cout << "No fields" << endl;
-        if (typeid(*c) == typeid(Black)) {
-            Chain<Black>* newChain = new Chain<Black>();  // Create Chain<Black>
+        if (typeid(*c) == typeid(Black))
+        {
+            Chain<Black> *newChain = new Chain<Black>(); // Create Chain<Black>
             p->addChain(newChain);
-            *newChain += c;  // Add the card to the newly created chain
+            *newChain += c; // Add the card to the newly created chain
         }
-        else if (typeid(*c) == typeid(Blue)) {
-            Chain<Blue>* newChain = new Chain<Blue>();  // Create Chain<Blue>
+        else if (typeid(*c) == typeid(Blue))
+        {
+            Chain<Blue> *newChain = new Chain<Blue>(); // Create Chain<Blue>
             p->addChain(newChain);
-            *newChain += c;  // Add the card to the newly created chain
+            *newChain += c; // Add the card to the newly created chain
         }
-        else if (typeid(*c) == typeid(Chili)) {
-            Chain<Chili>* newChain = new Chain<Chili>();  // Create Chain<Chili>
+        else if (typeid(*c) == typeid(Chili))
+        {
+            Chain<Chili> *newChain = new Chain<Chili>(); // Create Chain<Chili>
             p->addChain(newChain);
-            *newChain += c;  // Add the card to the newly created chain
+            *newChain += c; // Add the card to the newly created chain
         }
-        else if (typeid(*c) == typeid(Garden)) {
-            Chain<Garden>* newChain = new Chain<Garden>();  // Create Chain<Garden>
+        else if (typeid(*c) == typeid(Garden))
+        {
+            Chain<Garden> *newChain = new Chain<Garden>(); // Create Chain<Garden>
             p->addChain(newChain);
-            *newChain += c;  // Add the card to the newly created chain
+            *newChain += c; // Add the card to the newly created chain
         }
-        else if (typeid(*c) == typeid(Green)) {
-            Chain<Green>* newChain = new Chain<Green>();  // Create Chain<Green>
+        else if (typeid(*c) == typeid(Green))
+        {
+            Chain<Green> *newChain = new Chain<Green>(); // Create Chain<Green>
             p->addChain(newChain);
-            *newChain += c;  // Add the card to the newly created chain
+            *newChain += c; // Add the card to the newly created chain
         }
-        else if (typeid(*c) == typeid(Red)) {
-            Chain<Red>* newChain = new Chain<Red>();  // Create Chain<Red>
+        else if (typeid(*c) == typeid(Red))
+        {
+            Chain<Red> *newChain = new Chain<Red>(); // Create Chain<Red>
             p->addChain(newChain);
-            *newChain += c;  // Add the card to the newly created chain
+            *newChain += c; // Add the card to the newly created chain
         }
-        else if (typeid(*c) == typeid(Soy)) {
-            Chain<Soy>* newChain = new Chain<Soy>();  // Create Chain<Soy>
+        else if (typeid(*c) == typeid(Soy))
+        {
+            Chain<Soy> *newChain = new Chain<Soy>(); // Create Chain<Soy>
             p->addChain(newChain);
-            *newChain += c;  // Add the card to the newly created chain
+            *newChain += c; // Add the card to the newly created chain
         }
-        else if (typeid(*c) == typeid(Stink)) {
-            Chain<Stink>* newChain = new Chain<Stink>();  // Create Chain<Stink>
+        else if (typeid(*c) == typeid(Stink))
+        {
+            Chain<Stink> *newChain = new Chain<Stink>(); // Create Chain<Stink>
             p->addChain(newChain);
-            *newChain += c;  // Add the card to the newly created chain
-        } else {
+            *newChain += c; // Add the card to the newly created chain
+        }
+        else
+        {
             throw IllegalTypeException();
         }
         p->printFields(cout);
         cout << "Added a field!" << endl;
-    } else if (p->getNumChains() < p->getMaxNumChains()) {
-        std::cout << "there is an empty field" << endl;
-        Chain<Card>* newChain = new Chain<Card>();
-        ChainBase& chain = (*p)[p->getNumChains()];
-        std::cout << "Appending now" << endl;
-        chain += c;
-        cout << "added to chain" << endl;
-        // TODO: Edge case where they dont have max chain, but also already have a chain of this type
     }
-    else {
-        cout << "No empty field" << endl;
+    // Need to check if this type exists before starting a new chain
+    // TODO: Edge case where they dont have max chain, but also already have a chain of this type
+    else
+    {
         bool chainTypeExists = false;
         // If the player already has a chain of this type
         for (int i = 0; i < p->getNumChains(); i++)
         {
-            // if (c->getName() == p->operator[](i).getName())
-            // {
-            //     chainTypeExists = true;
-            //     p->operator[](i) += c;
-            //     cout << "added to matching chain" << endl;
-            //     break;
-            // }
-        }
-        // If not
-        if (!chainTypeExists)
-        {
-            cout << "You must sell a chain, which field will you harvest? (1";
-            if (p->getNumChains() > 1)
+            // TODO: we need to give the chain a way to return it's name
+            if (c->getName() == (p->operator[](i)).getName())
             {
-                cout << ", 2";
+                chainTypeExists = true;
+                p->operator[](i) += c;
+                cout << "added to matching chain" << endl;
+                break;
             }
-            if (p->getNumChains() > 2)
-            {
-                cout << ", 3";
-            }
-            cout << ")" << endl;
-            int j;
-            cin >> j;
-            p += p->operator[](j - 1).sell(); // Sell the chain
-            p->operator[](j - 1) += c;        // Add the chain to the player
         }
     }
+
+    if (p->getNumChains() < p->getMaxNumChains())
+    {
+        std::cout << "there is an empty field" << endl;
+        Chain<Card> *newChain = new Chain<Card>();
+        ChainBase &chain = (*p)[p->getNumChains()];
+        std::cout << "Appending now" << endl;
+        chain += c;
+        cout << "added to chain" << endl;
+    }
+
+    // If none of these then
+    cout << "You must sell a chain, which field will you harvest? (1";
+    if (p->getNumChains() > 1)
+    {
+        cout << ", 2";
+    }
+    if (p->getNumChains() > 2)
+    {
+        cout << ", 3";
+    }
+    cout << ")" << endl;
+    int j;
+    cin >> j;
+    p += p->operator[](j - 1).sell(); // Sell the chain, this should revert to BaseChain type
+    p->operator[](j - 1) += c;        // Add the chain to the player, we will have to change the Chain type here 
 }
 
 void takeCardFromTradeArea(Player *p, TradeArea *ta)
