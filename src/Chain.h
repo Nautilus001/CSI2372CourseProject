@@ -26,10 +26,14 @@ public:
 
     int sell() override
     {
+        std::cout << "Selling chain of type " << cards.front()->getName() << std::endl;
         if (this->cards.empty())
             return 0;
         int numCards = this->cards.size();
-        return this->cards.front()->getCardsPerCoin(numCards);
+        int amount = this->cards.front()->getCardsPerCoin(numCards);
+        cards.clear();
+        cards.shrink_to_fit();
+        return amount;
     }
 
     bool isEmpty() const override
@@ -57,7 +61,6 @@ public:
 
     Chain<T> &operator+=(Card *card)
     {
-        std::cout << "adding card to chain" << std::endl;
         if (cards.empty())
         {
             expectedType = &typeid(*card);

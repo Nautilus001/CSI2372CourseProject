@@ -28,7 +28,7 @@ public:
     ChainBase& operator[](int index);
 
     void buyThirdChain();
-    void addChain(ChainBase *chain);
+    void addChain(int i, ChainBase *chain);
 
     void popFront();
 

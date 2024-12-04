@@ -62,9 +62,9 @@ void Player::buyThirdChain()
     }
 }
 
-void Player::addChain(ChainBase *chain)
+void Player::addChainAt(int i, ChainBase *chain)
 {
-    this->chains[getNumChains()] = chain;
+    this->chains[i] = chain;
 }
 
 void Player::popFront()
