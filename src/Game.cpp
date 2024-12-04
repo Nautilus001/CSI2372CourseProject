@@ -117,7 +117,8 @@ void addCardToPlayerChain(Player *p, Card *c)
     p->printFields(cout);
     int j;
     cin >> j;
-    p += p->operator[](j - 1).sell(); // Sell the chain
+    int coins = p->operator[](j - 1).sell(); // Sell the chain
+    *p += coins;
     createNewChainAt(j - 1, p, c);    // Add the new chain to the player
     return;
 }
@@ -202,6 +203,21 @@ int main(int argc, char const *argv[])
 
         // need to keep this deck in memory
         static Deck deck = cardFactory->getDeck();
+        Card *b = new Blue();
+        Card *g = new Green();
+        Card *r = new Red();
+
+        deck.push_back(b);
+        deck.push_back(b);
+        deck.push_back(b);
+        deck.push_back(b);
+        deck.push_back(b);
+        deck.push_back(b);
+        deck.push_back(b);
+        deck.push_back(b);
+        deck.push_back(g);
+        deck.push_back(r);
+
         pDeck = &deck;
 
         // Draw 5 cards each
