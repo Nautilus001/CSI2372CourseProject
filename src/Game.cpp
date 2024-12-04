@@ -82,7 +82,6 @@ void addCardToPlayerChain(Player *p, Card *c)
         // If the player already has a chain of this type
         for (int i = 0; i < p->getNumChains(); i++)
         {
-            // TODO: we need to give the chain a way to return it's name
             if (c->getName() == (p->operator[](i)).getName())
             {
                 p->operator[](i) += c;
@@ -102,8 +101,8 @@ void addCardToPlayerChain(Player *p, Card *c)
         return;
     }
 
-    // If none of these then
-    cout << "You must sell a chain, which field will you harvest? (1";
+    // If none of these then we will show then the fields and make them sell one
+    cout << "\nYou must sell a chain, which field will you harvest? (1";
     if (p->getNumChains() > 1)
     {
         cout << ", 2";
@@ -113,11 +112,13 @@ void addCardToPlayerChain(Player *p, Card *c)
         cout << ", 3";
     }
     cout << ")" << endl;
+    p->printFields(cout);
     int j;
     cin >> j;
     p += p->operator[](j - 1).sell(); // Sell the chain
-    p += p->operator[](j - 1) = nullptr;  // every time we sell a chain it should be removed
-    p->operator[](j - 1) += c;        // Add the chain to the player, we will have to change the Chain type here 
+    Chain<Card> *newChain = new Chain<Card>(); // every time we sell a chain it should be removed
+    *newChain += c;                   
+    p->operator[](j - 1) = *newChain; // Add the chain to the player, we will have to change the Chain type here
     return;
 }
 

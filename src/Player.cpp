@@ -47,12 +47,10 @@ Player &Player::operator+=(int coins)
 
 ChainBase &Player::operator[](int i)
 {
-    std::cout << "Accesssing player chain by index" << i << std::endl;
     if (i > getNumChains())
     {
         throw std::out_of_range("Index out of range");
     }
-    std::cout << "Returning" << std::endl;
     return *this->chains[i];
 }
 
