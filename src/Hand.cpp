@@ -42,9 +42,8 @@ std::ostream &operator<<(std::ostream &out, const Hand &hand)
 {
     for (const auto &card : hand.cards)
     {
-        out << "(" << *card << ")" << card->getName() << ", "; // Prints the name of the card
-    }
-    out << std::endl;
+        out << card->getName() << "(" << *card << ")" << ", "; // Prints the name of the card
+    };
     return out;
 }
 

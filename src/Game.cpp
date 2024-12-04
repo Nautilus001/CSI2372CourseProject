@@ -10,26 +10,71 @@ using namespace std;
 
 void addCardToPlayerChain(Player *p, Card *c)
 {
-    // if there is an empty field
-    if (p->getNumChains() < p->getMaxNumChains())
-    {
-        p->operator[](p->getNumChains()) += c;
+    if (p == nullptr || c == nullptr) {
+        cout << "Invalid player or card" << endl;
+        return;
+    }
+    // if there is no existing field
+    if (p->getNumChains() == 0) {
+        cout << "No fields" << endl;
+        if (typeid(*c) == typeid(Black)) {
+            Chain<Black>* newChain = new Chain<Black>();  // Create Chain<Black>
+            p->addChain(newChain);
+        }
+        else if (typeid(*c) == typeid(Blue)) {
+            Chain<Blue>* newChain = new Chain<Blue>();  // Create Chain<Blue>
+            p->addChain(newChain);
+        }
+        else if (typeid(*c) == typeid(Chili)) {
+            Chain<Chili>* newChain = new Chain<Chili>();  // Create Chain<Chili>
+            p->addChain(newChain);
+        }
+        else if (typeid(*c) == typeid(Garden)) {
+            Chain<Garden>* newChain = new Chain<Garden>();  // Create Chain<Garden>
+            p->addChain(newChain);
+        }
+        else if (typeid(*c) == typeid(Green)) {
+            Chain<Green>* newChain = new Chain<Green>();  // Create Chain<Green>
+            p->addChain(newChain);
+        }
+        else if (typeid(*c) == typeid(Red)) {
+            Chain<Red>* newChain = new Chain<Red>();  // Create Chain<Red>
+            p->addChain(newChain);
+        }
+        else if (typeid(*c) == typeid(Soy)) {
+            Chain<Soy>* newChain = new Chain<Soy>();  // Create Chain<Soy>
+            p->addChain(newChain);
+        }
+        else if (typeid(*c) == typeid(Stink)) {
+            Chain<Stink>* newChain = new Chain<Stink>();  // Create Chain<Stink>
+            p->addChain(newChain);
+        } else {
+            throw IllegalTypeException();
+        }
+        p->printFields(cout);
+        cout << "Added a field!" << endl;
+    } else if (p->getNumChains() < p->getMaxNumChains()) {
+        std::cout << "there is an empty field" << endl;
+        Chain<Card>* newChain = new Chain<Card>();
+        ChainBase& chain = (*p)[p->getNumChains()];
+        std::cout << "Appending now" << endl;
+        chain += c;
         cout << "added to chain" << endl;
         // TODO: Edge case where they dont have max chain, but also already have a chain of this type
     }
-    else
-    {
+    else {
+        cout << "No empty field" << endl;
         bool chainTypeExists = false;
         // If the player already has a chain of this type
         for (int i = 0; i < p->getNumChains(); i++)
         {
-            if (c->getName() == p->operator[](i).getName())
-            {
-                chainTypeExists = true;
-                p->operator[](i) += c;
-                cout << "added to matching chain" << endl;
-                break;
-            }
+            // if (c->getName() == p->operator[](i).getName())
+            // {
+            //     chainTypeExists = true;
+            //     p->operator[](i) += c;
+            //     cout << "added to matching chain" << endl;
+            //     break;
+            // }
         }
         // If not
         if (!chainTypeExists)

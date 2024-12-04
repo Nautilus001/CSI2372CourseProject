@@ -15,15 +15,23 @@ private:
     int maxChains;
     std::vector<ChainBase*> chains;
 public:
-    Hand hand;
     Player(const std::string name = "");
+
+    Hand hand;
+
     std::string getName() const;
     int getNumCoins() const;
-    Player& operator+=(int coins);
     int getMaxNumChains() const;
     int getNumChains() const;
-    Chain<Card*>& operator[](int index);
+
+    Player& operator+=(int coins);
+    ChainBase& operator[](int index);
+
     void buyThirdChain();
+    void addChain(ChainBase *chain);
+
+    void popFront();
+
     std::ostream& printHand(std::ostream& out, bool all) const;
     std::ostream &printFields(std::ostream &out) const;
     friend std::ostream &operator<<(std::ostream &out, const Player &player);
