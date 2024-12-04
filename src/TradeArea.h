@@ -6,7 +6,7 @@
 #include "Chain.h"
 
 class TradeArea {
-private:
+public:
     std::list<Card*> cards;
 public:
     TradeArea();

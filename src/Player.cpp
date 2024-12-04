@@ -2,10 +2,12 @@
 #include "Hand.h"
 
 Player::Player(const std::string name)
-    : name(name),
-      coins(0),
-      maxChains(2),
-      hand() {}
+{
+    this->name = name;
+    this->coins = 0;
+    this->maxChains = 2;
+    chains.resize(maxChains);
+}
 
 std::string Player::getName() const
 {
@@ -15,12 +17,6 @@ std::string Player::getName() const
 int Player::getNumCoins() const
 {
     return this->coins;
-}
-
-Player &Player::operator+=(int coins)
-{
-    this->coins += coins;
-    return *this;
 }
 
 int Player::getMaxNumChains() const
@@ -34,7 +30,7 @@ int Player::getNumChains() const
 
     for (const auto &chain : this->chains)
     {
-        if (chain != nullptr && !chain->empty())
+        if (chain != nullptr && !chain->isEmpty())
         {
             ++chainCount;
         }
@@ -43,13 +39,18 @@ int Player::getNumChains() const
     return chainCount;
 }
 
-Chain<Card *> &Player::operator[](int i)
+Player &Player::operator+=(int coins)
+{
+    this->coins += coins;
+    return *this;
+}
+
+ChainBase &Player::operator[](int i)
 {
     if (i > getNumChains())
     {
         throw std::out_of_range("Index out of range");
     }
-
     return *this->chains[i];
 }
 
@@ -59,6 +60,16 @@ void Player::buyThirdChain()
     {
         this->maxChains = 3;
     }
+}
+
+void Player::addChain(int i, ChainBase *chain)
+{
+    this->chains[i] = chain;
+}
+
+void Player::popFront()
+{
+    this->chains.erase(chains.begin());
 }
 
 std::ostream &Player::printHand(std::ostream &out, bool all) const
@@ -72,9 +83,12 @@ std::ostream &Player::printHand(std::ostream &out, bool all) const
 
 std::ostream &Player::printFields(std::ostream &out) const
 {
-    for (auto &chain : this->chains)
+    for (const auto &chain : this->chains)
     {
-        out << chain;
+        if (chain != nullptr)
+        {
+            chain->print(out);
+        }
     }
     return out;
 }

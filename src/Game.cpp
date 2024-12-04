@@ -8,48 +8,118 @@
 
 using namespace std;
 
-void addCardToPlayerChain(Player *p, Card *c)
+void createNewChainAt(int i, Player *p, Card *c)
 {
-    // if there is an empty field
-    if (p->getNumChains() < p->getMaxNumChains())
+    if (typeid(*c) == typeid(Black))
     {
-        p->operator[](p->getNumChains()) += c;
-        cout << "added to chain" << endl;
-        // TODO: Edge case where they dont have max chain, but also already have a chain of this type
+        Chain<Black> *newChain = new Chain<Black>(); // Create Chain<Black>
+        p->addChain(i, newChain);
+        *newChain += c; // Add the card to the newly created chain
+    }
+    else if (typeid(*c) == typeid(Blue))
+    {
+        Chain<Blue> *newChain = new Chain<Blue>(); // Create Chain<Blue>
+        p->addChain(i, newChain);
+        *newChain += c; // Add the card to the newly created chain
+    }
+    else if (typeid(*c) == typeid(Chili))
+    {
+        Chain<Chili> *newChain = new Chain<Chili>(); // Create Chain<Chili>
+        p->addChain(i, newChain);
+        *newChain += c; // Add the card to the newly created chain
+    }
+    else if (typeid(*c) == typeid(Garden))
+    {
+        Chain<Garden> *newChain = new Chain<Garden>(); // Create Chain<Garden>
+        p->addChain(i, newChain);
+        *newChain += c; // Add the card to the newly created chain
+    }
+    else if (typeid(*c) == typeid(Green))
+    {
+        Chain<Green> *newChain = new Chain<Green>(); // Create Chain<Green>
+        p->addChain(i, newChain);
+        *newChain += c; // Add the card to the newly created chain
+    }
+    else if (typeid(*c) == typeid(Red))
+    {
+        Chain<Red> *newChain = new Chain<Red>(); // Create Chain<Red>
+        p->addChain(i, newChain);
+        *newChain += c; // Add the card to the newly created chain
+    }
+    else if (typeid(*c) == typeid(Soy))
+    {
+        Chain<Soy> *newChain = new Chain<Soy>(); // Create Chain<Soy>
+        p->addChain(i, newChain);
+        *newChain += c; // Add the card to the newly created chain
+    }
+    else if (typeid(*c) == typeid(Stink))
+    {
+        Chain<Stink> *newChain = new Chain<Stink>(); // Create Chain<Stink>
+        p->addChain(i, newChain);
+        *newChain += c; // Add the card to the newly created chain
     }
     else
     {
-        bool chainTypeExists = false;
+        throw IllegalTypeException();
+    }
+}
+
+void addCardToPlayerChain(Player *p, Card *c)
+{
+    if (p == nullptr || c == nullptr)
+    {
+        cout << "Invalid player or card" << endl;
+        return;
+    }
+    // if there is no existing field
+    if (p->getNumChains() == 0)
+    {
+        createNewChainAt(p->getNumChains(), p, c);
+        p->printFields(cout);
+        cout << "Added to a new field!" << endl;
+        return;
+    }
+    // check if this type card type exists in the players hand before starting a new chain
+    // case where they dont have max chain, but also already have a chain of this type
+    else
+    {
         // If the player already has a chain of this type
         for (int i = 0; i < p->getNumChains(); i++)
         {
-            if (c->getName() == p->operator[](i).getName())
+            if (c->getName() == (p->operator[](i)).getName())
             {
-                chainTypeExists = true;
                 p->operator[](i) += c;
                 cout << "added to matching chain" << endl;
-                break;
+                return;
             }
-        }
-        // If not
-        if (!chainTypeExists)
-        {
-            cout << "You must sell a chain, which field will you harvest? (1";
-            if (p->getNumChains() > 1)
-            {
-                cout << ", 2";
-            }
-            if (p->getNumChains() > 2)
-            {
-                cout << ", 3";
-            }
-            cout << ")" << endl;
-            int j;
-            cin >> j;
-            p += p->operator[](j - 1).sell(); // Sell the chain
-            p->operator[](j - 1) += c;        // Add the chain to the player
         }
     }
+
+    // if the card doesnt match but there are still more fields
+    if (p->getNumChains() < p->getMaxNumChains())
+    {
+        std::cout << "there is an empty field" << endl;
+        createNewChainAt(p->getNumChains(), p, c);
+        return;
+    }
+
+    // If none of these then we will show then the fields and make them sell one
+    cout << "\nYou must sell a chain, which field will you harvest? (1";
+    if (p->getNumChains() > 1)
+    {
+        cout << ", 2";
+    }
+    if (p->getNumChains() > 2)
+    {
+        cout << ", 3";
+    }
+    cout << ")" << endl;
+    p->printFields(cout);
+    int j;
+    cin >> j;
+    p += p->operator[](j - 1).sell(); // Sell the chain
+    createNewChainAt(j - 1, p, c);    // Add the new chain to the player
+    return;
 }
 
 void takeCardFromTradeArea(Player *p, TradeArea *ta)
@@ -163,15 +233,14 @@ int main(int argc, char const *argv[])
         //  For each Player
         for (Player *player : playerArray)
         {
-            // Display player info
-            cout << *player;
-
             //   Display Table
-            // TODO: check if tradeArea and Disguard are printing correctly
+            // TODO: check if tradeArea is printing correctly (i dont think it is)
             cout << *pTable; // This should display all the information except for the players hand
             //   Player draws top card from Deck
             player->hand += pDeck->draw();
 
+            // Display player info
+            cout << *player;
             // IMPORTANT: TODO: The code given in the PDF gives no option to buy a third field
             //            we should give the option to here if the player has not already done so AND has enough coins
 
