@@ -203,20 +203,6 @@ int main(int argc, char const *argv[])
 
         // need to keep this deck in memory
         static Deck deck = cardFactory->getDeck();
-        Card *b = new Blue();
-        Card *g = new Green();
-        Card *r = new Red();
-
-        deck.push_back(b);
-        deck.push_back(b);
-        deck.push_back(b);
-        deck.push_back(b);
-        deck.push_back(b);
-        deck.push_back(b);
-        deck.push_back(b);
-        deck.push_back(b);
-        deck.push_back(g);
-        deck.push_back(r);
 
         pDeck = &deck;
 
