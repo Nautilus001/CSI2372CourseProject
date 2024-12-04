@@ -20,34 +20,42 @@ void addCardToPlayerChain(Player *p, Card *c)
         if (typeid(*c) == typeid(Black)) {
             Chain<Black>* newChain = new Chain<Black>();  // Create Chain<Black>
             p->addChain(newChain);
+            *newChain += c;  // Add the card to the newly created chain
         }
         else if (typeid(*c) == typeid(Blue)) {
             Chain<Blue>* newChain = new Chain<Blue>();  // Create Chain<Blue>
             p->addChain(newChain);
+            *newChain += c;  // Add the card to the newly created chain
         }
         else if (typeid(*c) == typeid(Chili)) {
             Chain<Chili>* newChain = new Chain<Chili>();  // Create Chain<Chili>
             p->addChain(newChain);
+            *newChain += c;  // Add the card to the newly created chain
         }
         else if (typeid(*c) == typeid(Garden)) {
             Chain<Garden>* newChain = new Chain<Garden>();  // Create Chain<Garden>
             p->addChain(newChain);
+            *newChain += c;  // Add the card to the newly created chain
         }
         else if (typeid(*c) == typeid(Green)) {
             Chain<Green>* newChain = new Chain<Green>();  // Create Chain<Green>
             p->addChain(newChain);
+            *newChain += c;  // Add the card to the newly created chain
         }
         else if (typeid(*c) == typeid(Red)) {
             Chain<Red>* newChain = new Chain<Red>();  // Create Chain<Red>
             p->addChain(newChain);
+            *newChain += c;  // Add the card to the newly created chain
         }
         else if (typeid(*c) == typeid(Soy)) {
             Chain<Soy>* newChain = new Chain<Soy>();  // Create Chain<Soy>
             p->addChain(newChain);
+            *newChain += c;  // Add the card to the newly created chain
         }
         else if (typeid(*c) == typeid(Stink)) {
             Chain<Stink>* newChain = new Chain<Stink>();  // Create Chain<Stink>
             p->addChain(newChain);
+            *newChain += c;  // Add the card to the newly created chain
         } else {
             throw IllegalTypeException();
         }

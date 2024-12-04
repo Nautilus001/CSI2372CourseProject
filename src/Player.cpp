@@ -54,8 +54,8 @@ void Player::buyThirdChain() {
 }
 
 void Player::addChain(ChainBase* chain) {
-        this->chains.push_back(chain);
-    }
+    this->chains.push_back(chain);
+}
 
 void Player::popFront() {
     this->chains.erase(chains.begin());
