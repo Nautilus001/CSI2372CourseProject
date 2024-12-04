@@ -75,8 +75,8 @@ void addCardToPlayerChain(Player *p, Card *c)
         cout << "Added a field!" << endl;
         return;
     }
-    // Need to check if this type exists before starting a new chain
-    // TODO: Edge case where they dont have max chain, but also already have a chain of this type
+    // check if this type card type exists in the players hand before starting a new chain
+    // case where they dont have max chain, but also already have a chain of this type
     else
     {
         // If the player already has a chain of this type
@@ -115,7 +115,8 @@ void addCardToPlayerChain(Player *p, Card *c)
     cout << ")" << endl;
     int j;
     cin >> j;
-    p += p->operator[](j - 1).sell(); // Sell the chain, this should revert to BaseChain type
+    p += p->operator[](j - 1).sell(); // Sell the chain
+    p += p->operator[](j - 1) = nullptr;  // every time we sell a chain it should be removed
     p->operator[](j - 1) += c;        // Add the chain to the player, we will have to change the Chain type here 
     return;
 }
