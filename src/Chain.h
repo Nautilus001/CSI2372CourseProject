@@ -73,12 +73,9 @@ public:
         return *this;
     }
 
-    template <typename T>
-    std::string getName(T *t)
+    std::string getName() const override
     {
-        // TODO:
-        // std::string s = typeid(*t).name();
-        // return;
+        return cards.empty() ? "" : cards.front()->getName();
     }
 };
 

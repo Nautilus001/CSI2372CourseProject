@@ -73,34 +73,33 @@ void addCardToPlayerChain(Player *p, Card *c)
         }
         p->printFields(cout);
         cout << "Added a field!" << endl;
+        return;
     }
     // Need to check if this type exists before starting a new chain
     // TODO: Edge case where they dont have max chain, but also already have a chain of this type
     else
     {
-        bool chainTypeExists = false;
         // If the player already has a chain of this type
         for (int i = 0; i < p->getNumChains(); i++)
         {
             // TODO: we need to give the chain a way to return it's name
             if (c->getName() == (p->operator[](i)).getName())
             {
-                chainTypeExists = true;
                 p->operator[](i) += c;
                 cout << "added to matching chain" << endl;
-                break;
+                return;
             }
         }
     }
 
+    // if the card doesnt match but there are still more fields
     if (p->getNumChains() < p->getMaxNumChains())
     {
         std::cout << "there is an empty field" << endl;
         Chain<Card> *newChain = new Chain<Card>();
-        ChainBase &chain = (*p)[p->getNumChains()];
-        std::cout << "Appending now" << endl;
-        chain += c;
-        cout << "added to chain" << endl;
+        *newChain += c;
+        p->addChain(newChain);
+        return;
     }
 
     // If none of these then
@@ -118,6 +117,7 @@ void addCardToPlayerChain(Player *p, Card *c)
     cin >> j;
     p += p->operator[](j - 1).sell(); // Sell the chain, this should revert to BaseChain type
     p->operator[](j - 1) += c;        // Add the chain to the player, we will have to change the Chain type here 
+    return;
 }
 
 void takeCardFromTradeArea(Player *p, TradeArea *ta)
