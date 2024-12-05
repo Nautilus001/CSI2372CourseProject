@@ -11,13 +11,16 @@
 
 using namespace std;
 
-void clearScreen() {
-    for (int i = 0; i < 50; ++i) {
-        std::cout << std::endl;
-    }
+void clearScreen()
+{
+    // for (int i = 0; i < 50; ++i)
+    // {
+    //     std::cout << std::endl;
+    // }
 }
 
-void letUserRead(int seconds) {
+void letUserRead(int seconds)
+{
     std::this_thread::sleep_for(std::chrono::seconds(seconds));
 }
 
@@ -126,9 +129,9 @@ void addCardToPlayerChain(Player *p, Card *c)
     p->printFields(cout, false);
     int j;
     cin >> j;
-    int coins = (*p)[j-1].sell(); // Sell the chain
+    int coins = (*p)[j - 1].sell(); // Sell the chain
     *p += coins;
-    createNewChainAt(j - 1, p, c);    // Add the new chain to the player
+    createNewChainAt(j - 1, p, c); // Add the new chain to the player
     return;
 }
 
@@ -145,9 +148,9 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
     do
     {
         clearScreen();
+        cout << "Trade Area: " << *ta << endl;
         cout << *p << endl;
         cout << "What card would you like to take from the Trade Area? (\"none\" to skip)" << endl;
-        cout << "Trade Area: " << *ta << endl;
         cout << "Select: ";
         cin >> selectedChain;
 
@@ -256,34 +259,34 @@ int main(int argc, char const *argv[])
             // Display player info
             cout << *player;
 
-            // This block causes issues, the third chain doesnt appear in Player printout, also doesnt seem to hold cards? 
-            // Maybe initialization issue because there is no chain to add to it?
-            
-            // std::string freeRealEstate = "";
-            // if(player->getNumCoins() >= 3 && player->getMaxNumChains() == 2)
-            // {
-            //     cout << "Would you like to purchase a 3rd field for 3 coins? (y/n)" << endl;
-            //     cin >> freeRealEstate;
-            //     if (freeRealEstate == "y") player->buyThirdChain();
-            //     clearScreen();
-            //     cout << *player;
-            // }
+            // If these conditions are met we will offer the player a chance to buy a 3rd field
+            if (player->getNumCoins() >= 3 && player->getMaxNumChains() == 2)
+            {
+                std::string freeRealEstate = "";
+                cout << "Would you like to purchase a 3rd field for 3 coins? (y/n)" << endl;
+                cin >> freeRealEstate;
+                if (freeRealEstate == "y")
+                    player->buyThirdChain();
+                clearScreen();
+                cout << *player;
+            }
 
             takeCardFromTradeArea(player, pTradeArea);
 
             int numCards = pTradeArea->numCards();
-            for(int i = 0; i < numCards; ++i ) {
+            for (int i = 0; i < numCards; ++i)
+            {
                 *pDiscardPile += pTradeArea->pop();
             }
             // First card must be played
-            if(!player->hand.empty())
+            if (!player->hand.empty())
             {
+                cout << "SYSTEM: You must play the first card from your hand." << endl;
                 // Play the topmost card from Hand.
                 Card *card = player->hand.play();
-                addCardToPlayerChain(player, card); //add to a chain
-
-                cout << "SYSTEM: You must play the first card from your hand." << endl;
                 cout << "You played: " << card->getName() << endl;
+
+                addCardToPlayerChain(player, card); // add to a chain
 
                 letUserRead(2);
 
@@ -296,7 +299,7 @@ int main(int argc, char const *argv[])
                     cout << "Your top card is: " << (player->hand.top()->getName()) << endl;
                     cout << "Would you like to play this card? (y/n)" << endl;
                     cin >> playSecondCard;
-                    if(playSecondCard == "y")
+                    if (playSecondCard == "y")
                     {
                         addCardToPlayerChain(player, player->hand.play());
                         cout << *player;

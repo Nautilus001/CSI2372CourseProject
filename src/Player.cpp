@@ -61,6 +61,7 @@ void Player::buyThirdChain()
         this->maxChains = 3;
         this->coins -= 3;
     }
+    chains.resize(getMaxNumChains());
 }
 
 void Player::addChain(int i, ChainBase *chain)
