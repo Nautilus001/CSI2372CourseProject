@@ -196,7 +196,7 @@ int main(int argc, char const *argv[])
     if (existingGame[0] == 'y')
     {
         // load from file.....
-        // TODO: Implement save and load functions if we have time
+        cout << "NOT IMPLEMENTED"
         return 0;
     }
     else
@@ -239,7 +239,8 @@ int main(int argc, char const *argv[])
         //  if pause save game to file and exit
         if (pause)
         {
-            // TODO: implement save to file
+            // implement save to file
+            // Never go around to this
             return 0;
         }
 
