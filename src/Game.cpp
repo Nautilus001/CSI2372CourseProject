@@ -86,9 +86,9 @@ void addCardToPlayerChain(Player *p, Card *c)
         // If the player already has a chain of this type
         for (int i = 0; i < p->getNumChains(); i++)
         {
-            if (c->getName() == (p->operator[](i)).getName())
+            if (c->getName() == ((*p)[i]).getName())
             {
-                p->operator[](i) += c;
+                (*p)[i] += c;
                 cout << "added to matching chain" << endl;
                 return;
             }
@@ -117,7 +117,7 @@ void addCardToPlayerChain(Player *p, Card *c)
     p->printFields(cout);
     int j;
     cin >> j;
-    int coins = p->operator[](j - 1).sell(); // Sell the chain
+    int coins = (*p)[j-1].sell(); // Sell the chain
     *p += coins;
     createNewChainAt(j - 1, p, c);    // Add the new chain to the player
     return;
