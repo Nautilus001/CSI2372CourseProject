@@ -148,8 +148,8 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
     do
     {
         clearScreen();
-        cout << "Trade Area: " << *ta << endl;
         cout << *p << endl;
+        cout << "Trade Area: " << *ta << endl;
         cout << "What card would you like to take from the Trade Area? (\"none\" to skip)" << endl;
         cout << "Select: ";
         cin >> selectedChain;
@@ -196,7 +196,7 @@ int main(int argc, char const *argv[])
     if (existingGame[0] == 'y')
     {
         // load from file.....
-        cout << "NOT IMPLEMENTED"
+        cout << "NOT IMPLEMENTED";
         return 0;
     }
     else
@@ -371,4 +371,5 @@ int main(int argc, char const *argv[])
     {
         cout << player2->getName() << " wins!" << endl;
     }
+    letUserRead(5);
 }

@@ -87,13 +87,13 @@ std::ostream &Player::printFields(std::ostream &out, bool tabbed = false) const
 {
     for (const auto &chain : this->chains)
     {
+        if(tabbed) out << "\t";
         if (chain != nullptr)
         {
-            if(tabbed) out << "\t";
             chain->print(out);
             out << std::endl;
         } else {
-            out << "EMPTY" << std::endl;
+            out << "Available" << std::endl;
         }
     }
     return out;
@@ -109,6 +109,6 @@ std::ostream &operator<<(std::ostream &out, const Player &player)
     out << "|Fields: " << player.getNumChains() << "/" << player.getMaxNumChains() << std::endl;
     out << "|Fields Details:" << std::endl;
     player.printFields(out, true);
-    out << "|-------------------------------------------------" << std::endl;
+    out << "|_____________________" << std::endl;
     return out;
 }
