@@ -132,6 +132,7 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
     do
     {
         cout << "What chain would you like to take? (\"none\" to skip)" << endl;
+        cout << *ta;
         cin >> selectedChain;
 
         if (selectedChain != "none")
@@ -200,7 +201,7 @@ int main(int argc, char const *argv[])
         pDeck = &deck;
 
         // Draw 5 cards each
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; ++i)
         {
             // Make sure creating a hand is part of player
             player1->hand += pDeck->draw();
@@ -239,10 +240,9 @@ int main(int argc, char const *argv[])
             takeCardFromTradeArea(player, pTradeArea);
 
             // First card must be played
-            char playACard = 'y'; // could make this more robust using char array
-            while (playACard == 'y' && !player->hand.empty())
+            if(!player->hand.empty())
             {
-                //    Play the topmost card from Hand.
+                // Play the topmost card from Hand.
                 Card *card = player->hand.play();
                 cout << "You must play the first card from your hand.\nYou played: " << *card << endl;
 
@@ -253,9 +253,15 @@ int main(int argc, char const *argv[])
                 if (!player->hand.empty())
                 {
                     // if player decides to
+                    std::string playSecondCard;
                     cout << "Your top card is: " << (player->hand.top()->getName()) << endl;
                     cout << "Would you like to play this card? (y/n)" << endl;
-                    cin >> playACard;
+                    cin >> playSecondCard;
+                    if(playSecondCard == "y")
+                    {
+                        addCardToPlayerChain(player, player->hand.play());
+                        cout << *player;
+                    }
                 }
             }
 

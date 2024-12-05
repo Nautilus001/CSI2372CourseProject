@@ -1,4 +1,5 @@
 #include "DiscardPile.h"
+#include <algorithm>
 
 DiscardPile& DiscardPile::operator+=(Card* card) {
     if (card != nullptr) {

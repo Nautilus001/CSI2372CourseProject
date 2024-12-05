@@ -55,7 +55,7 @@ std::ostream &operator<<(std::ostream &out, const TradeArea &tradeArea)
     } else {
         for (auto &card : tradeArea.cards)
         {
-            out << card->getName();
+            out << card->getName() << " ";
         }
     }
     out << std::endl;
