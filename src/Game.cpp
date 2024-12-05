@@ -11,6 +11,16 @@
 
 using namespace std;
 
+void clearScreen() {
+    for (int i = 0; i < 50; ++i) {
+        std::cout << std::endl;
+    }
+}
+
+void letUserRead(int seconds) {
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
+}
+
 void createNewChainAt(int i, Player *p, Card *c)
 {
     if (typeid(*c) == typeid(Black))
@@ -134,8 +144,10 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
     string selectedChain = "";
     do
     {
-        cout << "What chain would you like to take? (\"none\" to skip)" << endl;
-        cout << "Chains: " << *ta << endl;
+        clearScreen();
+        cout << *p << endl;
+        cout << "What card would you like to take from the Trade Area? (\"none\" to skip)" << endl;
+        cout << "Trade Area: " << *ta << endl;
         cout << "Select: ";
         cin >> selectedChain;
 
@@ -159,16 +171,6 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
             }
         }
     } while (selectedChain != "none" && !ta->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
-}
-
-void clearScreen() {
-    for (int i = 0; i < 50; ++i) {
-        std::cout << std::endl;
-    }
-}
-
-void letUserRead(int seconds) {
-    std::this_thread::sleep_for(std::chrono::seconds(seconds));
 }
 
 int main(int argc, char const *argv[])
@@ -247,16 +249,28 @@ int main(int argc, char const *argv[])
             cout << "**********************************" << endl;
 
             // Display Table
-            cout << *pTable;
+            cout << *pTable << endl;
             // Player draws top card from Deck
             player->hand += pDeck->draw();
 
             // Display player info
             cout << *player;
-            // IMPORTANT: TODO: The code given in the PDF gives no option to buy a third field
-            //            we should give the option to here if the player has not already done so AND has enough coins
+
+            // This block causes issues, the third chain doesnt appear in Player printout, also doesnt seem to hold cards? 
+            // Maybe initialization issue because there is no chain to add to it?
+            
+            // std::string freeRealEstate = "";
+            // if(player->getNumCoins() >= 3 && player->getMaxNumChains() == 2)
+            // {
+            //     cout << "Would you like to purchase a 3rd field for 3 coins? (y/n)" << endl;
+            //     cin >> freeRealEstate;
+            //     if (freeRealEstate == "y") player->buyThirdChain();
+            //     clearScreen();
+            //     cout << *player;
+            // }
 
             takeCardFromTradeArea(player, pTradeArea);
+
             int numCards = pTradeArea->numCards();
             for(int i = 0; i < numCards; ++i ) {
                 *pDiscardPile += pTradeArea->pop();
@@ -266,12 +280,13 @@ int main(int argc, char const *argv[])
             {
                 // Play the topmost card from Hand.
                 Card *card = player->hand.play();
-                cout << "SYSTEM: You must play the first card from your hand." << endl;
                 addCardToPlayerChain(player, card); //add to a chain
 
-                letUserRead(1);
+                cout << "SYSTEM: You must play the first card from your hand." << endl;
+                cout << "You played: " << card->getName() << endl;
 
-                cout << "You played: " << *card << endl;
+                letUserRead(2);
+
                 cout << *player;
 
                 if (!player->hand.empty())
@@ -322,6 +337,7 @@ int main(int argc, char const *argv[])
                 cout << card->getName() << endl;
                 *pTradeArea += card;
             }
+            cout << endl;
 
             //   while top card of discard pile matches an existing card in the trade area
             while (pTradeArea->legal(pDiscardPile->top()))

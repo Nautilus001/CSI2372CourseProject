@@ -59,6 +59,7 @@ void Player::buyThirdChain()
     if (this->getMaxNumChains() != 3)
     {
         this->maxChains = 3;
+        this->coins -= 3;
     }
 }
 
@@ -90,6 +91,8 @@ std::ostream &Player::printFields(std::ostream &out, bool tabbed = false) const
             if(tabbed) out << "\t";
             chain->print(out);
             out << std::endl;
+        } else {
+            out << "EMPTY" << std::endl;
         }
     }
     return out;
