@@ -65,6 +65,5 @@ std::ostream &operator<<(std::ostream &out, const TradeArea &tradeArea)
             out << card->getName() << " ";
         }
     }
-    out << std::endl;
     return out;
 }

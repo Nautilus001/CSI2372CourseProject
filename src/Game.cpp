@@ -5,6 +5,9 @@
 #include "Table.h"
 #include "Hand.h"
 #include "Player.h"
+#include <iostream>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -125,15 +128,15 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
     {
         return;
     }
-    //   If TradeArea is not empty
-    // this is relevant for the first turn
 
-    //    Add bean cards from the TradeArea to chains or discard them.
+    // If TradeArea is not empty
+    // Add bean cards from the TradeArea to chains or discard them.
     string selectedChain = "";
     do
     {
         cout << "What chain would you like to take? (\"none\" to skip)" << endl;
-        cout << *ta;
+        cout << "Chains: " << *ta << endl;
+        cout << "Select: ";
         cin >> selectedChain;
 
         if (selectedChain != "none")
@@ -156,6 +159,16 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
             }
         }
     } while (selectedChain != "none" && !ta->isEmpty()); // While the player doesnt want to skip and tradeArea isnt empty
+}
+
+void clearScreen() {
+    for (int i = 0; i < 50; ++i) {
+        std::cout << std::endl;
+    }
+}
+
+void letUserRead(int seconds) {
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
 }
 
 int main(int argc, char const *argv[])
@@ -225,13 +238,17 @@ int main(int argc, char const *argv[])
             return 0;
         }
 
-        //  For each Player
+        // For each Player
         for (Player *player : playerArray)
         {
-            //   Display Table
-            // TODO: check if tradeArea is printing correctly (i dont think it is)
-            cout << *pTable; // This should display all the information except for the players hand
-            //   Player draws top card from Deck
+            clearScreen();
+            cout << "**********************************" << endl;
+            cout << "*        " << player->getName() << "'s Turn" << endl;
+            cout << "**********************************" << endl;
+
+            // Display Table
+            cout << *pTable;
+            // Player draws top card from Deck
             player->hand += pDeck->draw();
 
             // Display player info
@@ -249,10 +266,12 @@ int main(int argc, char const *argv[])
             {
                 // Play the topmost card from Hand.
                 Card *card = player->hand.play();
-                cout << "You must play the first card from your hand.\nYou played: " << *card << endl;
+                cout << "SYSTEM: You must play the first card from your hand." << endl;
+                addCardToPlayerChain(player, card); //add to a chain
 
-                // Add to a chain
-                addCardToPlayerChain(player, card);
+                letUserRead(1);
+
+                cout << "You played: " << *card << endl;
                 cout << *player;
 
                 if (!player->hand.empty())
@@ -292,12 +311,11 @@ int main(int argc, char const *argv[])
                     cout << "Your hand: ";
                     player->printHand(cout, true); // print entire hand
                     cout << endl;
-                    cout << "Discard Pile: \n" << *pDiscardPile;
                 }
             }
 
             //    Draw three cards from the deck and place cards in the trade area
-            cout << "The following cards are drawn and added to Trade Area:" << endl;
+            cout << "SYSTEM: The following cards are drawn and added to Trade Area:" << endl;
             for (int i = 0; i < 3; i++)
             {
                 Card *card = pDeck->draw();
@@ -319,8 +337,8 @@ int main(int argc, char const *argv[])
             // Draw two cards from Deck and add the cards to the player's hand (at the back).
             player->hand += (pDeck->draw());
             player->hand += (pDeck->draw());
-            cout << "You drew 2 cards and ended your turn" << endl;
-            cout << *pDiscardPile;
+            cout << "SYSTEM: You drew 2 cards and ended your turn" << endl;
+            letUserRead(2);
         }
     }
 

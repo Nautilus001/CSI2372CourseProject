@@ -87,8 +87,9 @@ std::ostream &Player::printFields(std::ostream &out, bool tabbed = false) const
     {
         if (chain != nullptr)
         {
-            if(tabbed) out << "\t\t";
+            if(tabbed) out << "\t";
             chain->print(out);
+            out << std::endl;
         }
     }
     return out;
@@ -96,10 +97,14 @@ std::ostream &Player::printFields(std::ostream &out, bool tabbed = false) const
 
 std::ostream &operator<<(std::ostream &out, const Player &player)
 {
-    out << "Player: " << player.getName() << "\n";
-    out << "\tHand: " << player.hand << "\n";
-    out << "\tCoins: " << player.getNumCoins() << "\n";
-    out << "\tFields: " << player.getNumChains() << "/" << player.getMaxNumChains() << "\n";
+    out << "======================" << std::endl;
+    out << "| Player: " << player.getName() << std::endl;
+    out << "======================" << std::endl;
+    out << "|Hand: " << player.hand << std::endl;
+    out << "|Coins: " << player.getNumCoins() << std::endl;
+    out << "|Fields: " << player.getNumChains() << "/" << player.getMaxNumChains() << std::endl;
+    out << "|Fields Details:" << std::endl;
     player.printFields(out, true);
+    out << "|-------------------------------------------------" << std::endl;
     return out;
 }

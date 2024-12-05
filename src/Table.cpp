@@ -42,11 +42,13 @@ std::vector<std::string> Table::getPlayerNames() const{
 
 std::ostream& operator<<(std::ostream& out, const Table& table) {
     std::vector<std::string> names = table.getPlayerNames();
-    
-    out << "Discard Pile:" << std::endl;
-    out << "    " << *table.discardPile;
-    out << "Trade Area: " << std::endl;
-    out << "    " << *table.tradeArea;
-
+    out << "|---------------- TABLE ----------------" << std::endl;
+    out << "|Player 1: " << table.players[0]->getName();
+    out << " || Player 2: " << table.players[1]->getName() << std::endl;
+    out << "|Discard Pile:" << std::endl;
+    out << "|    " << *table.discardPile << std::endl;
+    out << "|Trade Area: " << std::endl;
+    out << "|    " << *table.tradeArea << std::endl;
+    out << "|---------------------------------------";
     return out;
 }

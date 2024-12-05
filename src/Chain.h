@@ -50,11 +50,10 @@ public:
                 card->print(out); // Call print() of the card to print its specific representation
                 out << " ";
             }
-            out << std::endl; // Add a newline at the end of the printed chain
         }
         else
         {
-            out << "Empty chain" << std::endl; // Handle empty chains
+            out << "Empty chain"; // Handle empty chains
         }
     }
 
