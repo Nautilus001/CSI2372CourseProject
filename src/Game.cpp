@@ -5,8 +5,24 @@
 #include "Table.h"
 #include "Hand.h"
 #include "Player.h"
+#include <iostream>
+#include <chrono>
+#include <thread>
 
 using namespace std;
+
+void clearScreen()
+{
+    // for (int i = 0; i < 50; ++i)
+    // {
+    //     std::cout << std::endl;
+    // }
+}
+
+void letUserRead(int seconds)
+{
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
+}
 
 void createNewChainAt(int i, Player *p, Card *c)
 {
@@ -75,8 +91,6 @@ void addCardToPlayerChain(Player *p, Card *c)
     if (p->getNumChains() == 0)
     {
         createNewChainAt(p->getNumChains(), p, c);
-        p->printFields(cout);
-        cout << "Added to a new field!" << endl;
         return;
     }
     // check if this type card type exists in the players hand before starting a new chain
@@ -88,8 +102,7 @@ void addCardToPlayerChain(Player *p, Card *c)
         {
             if (c->getName() == ((*p)[i]).getName())
             {
-                (*p)[i] += c;
-                cout << "added to matching chain" << endl;
+                p->operator[](i) += c;
                 return;
             }
         }
@@ -98,7 +111,6 @@ void addCardToPlayerChain(Player *p, Card *c)
     // if the card doesnt match but there are still more fields
     if (p->getNumChains() < p->getMaxNumChains())
     {
-        std::cout << "there is an empty field" << endl;
         createNewChainAt(p->getNumChains(), p, c);
         return;
     }
@@ -114,12 +126,12 @@ void addCardToPlayerChain(Player *p, Card *c)
         cout << ", 3";
     }
     cout << ")" << endl;
-    p->printFields(cout);
+    p->printFields(cout, false);
     int j;
     cin >> j;
-    int coins = (*p)[j-1].sell(); // Sell the chain
+    int coins = (*p)[j - 1].sell(); // Sell the chain
     *p += coins;
-    createNewChainAt(j - 1, p, c);    // Add the new chain to the player
+    createNewChainAt(j - 1, p, c); // Add the new chain to the player
     return;
 }
 
@@ -127,17 +139,19 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
 {
     if (ta->isEmpty())
     {
-        cout << "Trade Area is empty" << endl;
         return;
     }
-    //   If TradeArea is not empty
-    // this is relevant for the first turn
 
-    //    Add bean cards from the TradeArea to chains or discard them.
+    // If TradeArea is not empty
+    // Add bean cards from the TradeArea to chains or discard them.
     string selectedChain = "";
     do
     {
-        cout << "What chain would you like to take? (\"none\" to skip)" << endl;
+        clearScreen();
+        cout << *p << endl;
+        cout << "Trade Area: " << *ta << endl;
+        cout << "What card would you like to take from the Trade Area? (\"none\" to skip)" << endl;
+        cout << "Select: ";
         cin >> selectedChain;
 
         if (selectedChain != "none")
@@ -171,9 +185,9 @@ int main(int argc, char const *argv[])
     Player *player2 = nullptr;
     vector<Player *> playerArray;
     Deck *pDeck = nullptr;
-    DiscardPile *pDiscardPile = nullptr;
-    TradeArea *pTradeArea = nullptr;
     Table *pTable = nullptr;
+    DiscardPile *pDiscardPile = new DiscardPile();
+    TradeArea *pTradeArea = new TradeArea();
 
     string existingGame;
     cout << "Do you have a saved game? y/n" << endl;
@@ -182,18 +196,18 @@ int main(int argc, char const *argv[])
     if (existingGame[0] == 'y')
     {
         // load from file.....
-        // TODO: Implement save and load functions if we have time
+        cout << "NOT IMPLEMENTED";
         return 0;
     }
     else
     {
         // Setup
         string player1Name;
-        cout << "Enter player 1 name: " << endl;
+        cout << "Enter player 1 name: ";
         cin >> player1Name;
 
         string player2Name;
-        cout << "Enter player 2 name: " << endl;
+        cout << "Enter player 2 name: ";
         cin >> player2Name;
 
         player1 = new Player(player1Name);
@@ -207,15 +221,12 @@ int main(int argc, char const *argv[])
         pDeck = &deck;
 
         // Draw 5 cards each
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; ++i)
         {
             // Make sure creating a hand is part of player
             player1->hand += pDeck->draw();
             player2->hand += pDeck->draw();
         }
-
-        pDiscardPile = new DiscardPile();
-        pTradeArea = new TradeArea();
         pTable = new Table(playerArray, pDeck, pTradeArea, pDiscardPile);
     }
 
@@ -228,43 +239,72 @@ int main(int argc, char const *argv[])
         //  if pause save game to file and exit
         if (pause)
         {
-            // TODO: implement save to file
+            // implement save to file
+            // Never go around to this
             return 0;
         }
 
-        //  For each Player
+        // For each Player
         for (Player *player : playerArray)
         {
-            //   Display Table
-            // TODO: check if tradeArea is printing correctly (i dont think it is)
-            cout << *pTable; // This should display all the information except for the players hand
-            //   Player draws top card from Deck
+            clearScreen();
+            cout << "**********************************" << endl;
+            cout << "*        " << player->getName() << "'s Turn" << endl;
+            cout << "**********************************" << endl;
+
+            // Display Table
+            cout << *pTable << endl;
+            // Player draws top card from Deck
             player->hand += pDeck->draw();
 
             // Display player info
             cout << *player;
-            // IMPORTANT: TODO: The code given in the PDF gives no option to buy a third field
-            //            we should give the option to here if the player has not already done so AND has enough coins
+
+            // If these conditions are met we will offer the player a chance to buy a 3rd field
+            if (player->getNumCoins() >= 3 && player->getMaxNumChains() == 2)
+            {
+                std::string freeRealEstate = "";
+                cout << "Would you like to purchase a 3rd field for 3 coins? (y/n)" << endl;
+                cin >> freeRealEstate;
+                if (freeRealEstate == "y")
+                    player->buyThirdChain();
+                clearScreen();
+                cout << *player;
+            }
 
             takeCardFromTradeArea(player, pTradeArea);
 
-            // First card must be played
-            char playACard = 'y'; // could make this more robust using char array
-            while (playACard == 'y' && !player->hand.empty())
+            int numCards = pTradeArea->numCards();
+            for (int i = 0; i < numCards; ++i)
             {
-                //    Play the topmost card from Hand.
+                *pDiscardPile += pTradeArea->pop();
+            }
+            // First card must be played
+            if (!player->hand.empty())
+            {
+                cout << "SYSTEM: You must play the first card from your hand." << endl;
+                // Play the topmost card from Hand.
                 Card *card = player->hand.play();
-                cout << "You played: " << *card << endl;
+                cout << "You played: " << card->getName() << endl;
 
-                // Add to a chain
-                addCardToPlayerChain(player, card);
+                addCardToPlayerChain(player, card); // add to a chain
+
+                letUserRead(2);
+
+                cout << *player;
 
                 if (!player->hand.empty())
                 {
                     // if player decides to
-                    cout << "Your top card is: " << *(player->hand.top()) << endl;
+                    std::string playSecondCard;
+                    cout << "Your top card is: " << (player->hand.top()->getName()) << endl;
                     cout << "Would you like to play this card? (y/n)" << endl;
-                    cin >> playACard;
+                    cin >> playSecondCard;
+                    if (playSecondCard == "y")
+                    {
+                        addCardToPlayerChain(player, player->hand.play());
+                        cout << *player;
+                    }
                 }
             }
 
@@ -275,31 +315,33 @@ int main(int argc, char const *argv[])
                 cout << "Your hand: ";
                 player->printHand(cout, true); // print entire hand
 
-                //   If player decides to
+                // If player decides to
                 cout << "Would you like to discard a card? (y/n)" << endl;
-                string disgardACard;
-                cin >> disgardACard;
-                if (disgardACard[0] == 'y')
+                string discardACard;
+                cin >> discardACard;
+                if (discardACard[0] == 'y')
                 {
 
-                    //    Discard the arbitrary card from the player's hand and place it on the discard pile.
+                    // Discard the arbitrary card from the player's hand and place it on the discard pile.
                     int cardToDiscard;
                     cout << "Which card will you discard? 1 to " << player->hand.size() << endl;
                     cin >> cardToDiscard;
                     *pDiscardPile += player->hand[cardToDiscard - 1]; // We need to POP from players hand
                     cout << "Your hand: ";
                     player->printHand(cout, true); // print entire hand
+                    cout << endl;
                 }
             }
 
             //    Draw three cards from the deck and place cards in the trade area
-            cout << "The following cards are drawn and added to Trade Area:" << endl;
+            cout << "SYSTEM: The following cards are drawn and added to Trade Area:" << endl;
             for (int i = 0; i < 3; i++)
             {
                 Card *card = pDeck->draw();
-                cout << *card << endl;
+                cout << card->getName() << endl;
                 *pTradeArea += card;
             }
+            cout << endl;
 
             //   while top card of discard pile matches an existing card in the trade area
             while (pTradeArea->legal(pDiscardPile->top()))
@@ -315,7 +357,8 @@ int main(int argc, char const *argv[])
             // Draw two cards from Deck and add the cards to the player's hand (at the back).
             player->hand += (pDeck->draw());
             player->hand += (pDeck->draw());
-            cout << "You drew 2 cards and ended your turn" << endl;
+            cout << "SYSTEM: You drew 2 cards and ended your turn" << endl;
+            letUserRead(2);
         }
     }
 
@@ -328,4 +371,5 @@ int main(int argc, char const *argv[])
     {
         cout << player2->getName() << " wins!" << endl;
     }
+    letUserRead(5);
 }

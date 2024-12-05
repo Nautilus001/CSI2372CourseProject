@@ -33,7 +33,7 @@ public:
     void popFront();
 
     std::ostream& printHand(std::ostream& out, bool all) const;
-    std::ostream &printFields(std::ostream &out) const;
+    std::ostream &printFields(std::ostream &out, bool tabbed) const;
     friend std::ostream &operator<<(std::ostream &out, const Player &player);
 };
 

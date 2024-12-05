@@ -7,13 +7,13 @@ Table::Table(std::vector<Player *> players, Deck *deck, TradeArea *tradeArea, Di
     this->players.push_back(players[0]); // Player 1
     this->players.push_back(players[1]); // Player 2
 
-    this->deck = *deck;
-    this->discardPile = *discardPile;
-    this->tradeArea = *tradeArea;
+    this->deck = deck;
+    this->discardPile = discardPile;
+    this->tradeArea = tradeArea;
 }
 
 bool Table::win(std::string& playerName) const {
-    if (deck.isEmpty()) {
+    if (this->deck->isEmpty()) {
         if (players[0]->getNumCoins() > players[1]->getNumCoins()) {
             playerName = players[0]->getName();
             return true;
@@ -42,22 +42,13 @@ std::vector<std::string> Table::getPlayerNames() const{
 
 std::ostream& operator<<(std::ostream& out, const Table& table) {
     std::vector<std::string> names = table.getPlayerNames();
-    
-
-    // We dont need to print these (keeping as comments for testing)
-
-    // for (int i = 0; i < 2; i++) {
-    //     out << "Player " << (i + 1) << ": " << names[i] << "\n";
-    // }
-
-    // out << "Deck: \n";
-    // out << "    " << table.deck << "\n";
-
-    out << "Discard Pile: \n";
-    out << "    " << table.discardPile << "\n";
-
-    out << "Trade Area: \n";
-    out << "    " << table.tradeArea << "\n";
-
+    out << "|---------------- TABLE ----------------" << std::endl;
+    out << "|Player 1: " << table.players[0]->getName();
+    out << " || Player 2: " << table.players[1]->getName() << std::endl;
+    out << "|Discard Pile:" << std::endl;
+    out << "|    " << *table.discardPile << std::endl;
+    out << "|Trade Area: " << std::endl;
+    out << "|    " << *table.tradeArea << std::endl;
+    out << "|---------------------------------------";
     return out;
 }

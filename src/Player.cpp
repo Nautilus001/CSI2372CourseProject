@@ -59,7 +59,9 @@ void Player::buyThirdChain()
     if (this->getMaxNumChains() != 3)
     {
         this->maxChains = 3;
+        this->coins -= 3;
     }
+    chains.resize(getMaxNumChains());
 }
 
 void Player::addChain(int i, ChainBase *chain)
@@ -81,13 +83,17 @@ std::ostream &Player::printHand(std::ostream &out, bool all) const
     return out;
 }
 
-std::ostream &Player::printFields(std::ostream &out) const
+std::ostream &Player::printFields(std::ostream &out, bool tabbed = false) const
 {
     for (const auto &chain : this->chains)
     {
+        if(tabbed) out << "\t";
         if (chain != nullptr)
         {
             chain->print(out);
+            out << std::endl;
+        } else {
+            out << "Available" << std::endl;
         }
     }
     return out;
@@ -95,10 +101,14 @@ std::ostream &Player::printFields(std::ostream &out) const
 
 std::ostream &operator<<(std::ostream &out, const Player &player)
 {
-    out << "Player: " << player.getName() << "\n";
-    out << "\tHand: " << player.hand << "\n";
-    out << "\tCoins: " << player.getNumCoins() << "\n";
-    out << "\tFields: " << player.getNumChains() << "/" << player.getMaxNumChains() << "\n";
-    player.printFields(out);
+    out << "======================" << std::endl;
+    out << "| Player: " << player.getName() << std::endl;
+    out << "======================" << std::endl;
+    out << "|Hand: " << player.hand << std::endl;
+    out << "|Coins: " << player.getNumCoins() << std::endl;
+    out << "|Fields: " << player.getNumChains() << "/" << player.getMaxNumChains() << std::endl;
+    out << "|Fields Details:" << std::endl;
+    player.printFields(out, true);
+    out << "|_____________________" << std::endl;
     return out;
 }

@@ -9,14 +9,14 @@ class TradeArea {
 public:
     std::list<Card*> cards;
 public:
-    TradeArea();
-    bool isEmpty();
+    bool isEmpty() const;
     std::vector<Card *> getCards() const;
     TradeArea& operator+=(Card* card);
     bool legal(Card* card) const;
     Card* trade(const std::string& beanName);
     int numCards() const;
-    friend std::ostream& operator<<(std::ostream& out, const TradeArea& tradeArea);
+    Card* pop();
+    friend std::ostream &operator<<(std::ostream &out, const TradeArea &tradeArea);
 };
 
 #endif
