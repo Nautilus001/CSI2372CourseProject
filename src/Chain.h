@@ -32,7 +32,6 @@ public:
         int numCards = this->cards.size();
         int amount = this->cards.front()->getCardsPerCoin(numCards);
         cards.clear();
-        cards.shrink_to_fit();
         return amount;
     }
 
