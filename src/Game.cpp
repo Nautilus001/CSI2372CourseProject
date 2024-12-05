@@ -240,7 +240,10 @@ int main(int argc, char const *argv[])
             //            we should give the option to here if the player has not already done so AND has enough coins
 
             takeCardFromTradeArea(player, pTradeArea);
-
+            int numCards = pTradeArea->numCards();
+            for(int i = 0; i < numCards; ++i ) {
+                *pDiscardPile += pTradeArea->pop();
+            }
             // First card must be played
             if(!player->hand.empty())
             {

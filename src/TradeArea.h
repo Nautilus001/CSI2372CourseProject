@@ -15,7 +15,8 @@ public:
     bool legal(Card* card) const;
     Card* trade(const std::string& beanName);
     int numCards() const;
-    friend std::ostream& operator<<(std::ostream& out, const TradeArea& tradeArea);
+    Card* pop();
+    friend std::ostream &operator<<(std::ostream &out, const TradeArea &tradeArea);
 };
 
 #endif

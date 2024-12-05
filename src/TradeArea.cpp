@@ -1,4 +1,5 @@
 #include "TradeArea.h"
+#include "DiscardPile.h"
 
 bool TradeArea::isEmpty() const
 {
@@ -46,6 +47,12 @@ Card *TradeArea::trade(const std::string &beanName)
 int TradeArea::numCards() const
 {
     return this->cards.size();
+}
+
+Card* TradeArea::pop() {
+    Card* card = this->cards.front();
+    this->cards.pop_front();
+    return card;
 }
 
 std::ostream &operator<<(std::ostream &out, const TradeArea &tradeArea)

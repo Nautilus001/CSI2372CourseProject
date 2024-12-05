@@ -3,9 +3,7 @@
 
 DiscardPile& DiscardPile::operator+=(Card* card) {
     if (card != nullptr) {
-        std::cout << "Pushing";
         this->cards.push_back(card);
-        std::cout << "pushed";
     } else {
         std::cout << "Nullptr";
     }
