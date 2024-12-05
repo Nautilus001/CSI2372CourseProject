@@ -1,35 +1,31 @@
 #include "TradeArea.h"
 
-TradeArea::TradeArea()
-{
-    std::list<Card *> cards;
-}
-
-bool TradeArea::isEmpty()
+bool TradeArea::isEmpty() const
 {
     return this->cards.empty();
 }
 
 TradeArea &TradeArea::operator+=(Card *card)
 {
-    cards.push_back(card);
+    this->cards.push_back(card);
     return *this;
 }
 
-bool TradeArea::legal(Card *card) const
+bool TradeArea::legal(Card *incomingCard) const
 {
-    if (card == nullptr)
+    if (incomingCard == nullptr)
     {
         return false;
     }
     
-    for (const auto &elem : this->cards)
+    for (const auto &card : this->cards)
     {
-        if (elem->getName() == card->getName())
+        if (card->getName() == incomingCard->getName())
         {
             return true;
         }
     }
+
     return false;
 }
 
@@ -52,21 +48,16 @@ int TradeArea::numCards() const
     return this->cards.size();
 }
 
-std::vector<Card *> TradeArea::getCards() const
-{
-    std::vector<Card *> cardVector;
-    for (auto &card : this->cards)
-    {
-        cardVector.push_back(card);
-    }
-    return cardVector;
-}
-
 std::ostream &operator<<(std::ostream &out, const TradeArea &tradeArea)
 {
-    for (auto &card : tradeArea.getCards())
-    {
-        card->print(out);
+    if(tradeArea.isEmpty()) {
+        out << "Empty";
+    } else {
+        for (auto &card : tradeArea.cards)
+        {
+            out << card->getName();
+        }
     }
+    out << std::endl;
     return out;
 }

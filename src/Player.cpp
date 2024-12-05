@@ -81,12 +81,13 @@ std::ostream &Player::printHand(std::ostream &out, bool all) const
     return out;
 }
 
-std::ostream &Player::printFields(std::ostream &out) const
+std::ostream &Player::printFields(std::ostream &out, bool tabbed = false) const
 {
     for (const auto &chain : this->chains)
     {
         if (chain != nullptr)
         {
+            if(tabbed) out << "\t\t";
             chain->print(out);
         }
     }
@@ -99,6 +100,6 @@ std::ostream &operator<<(std::ostream &out, const Player &player)
     out << "\tHand: " << player.hand << "\n";
     out << "\tCoins: " << player.getNumCoins() << "\n";
     out << "\tFields: " << player.getNumChains() << "/" << player.getMaxNumChains() << "\n";
-    player.printFields(out);
+    player.printFields(out, true);
     return out;
 }

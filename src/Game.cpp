@@ -75,8 +75,6 @@ void addCardToPlayerChain(Player *p, Card *c)
     if (p->getNumChains() == 0)
     {
         createNewChainAt(p->getNumChains(), p, c);
-        p->printFields(cout);
-        cout << "Added to a new field!" << endl;
         return;
     }
     // check if this type card type exists in the players hand before starting a new chain
@@ -89,7 +87,6 @@ void addCardToPlayerChain(Player *p, Card *c)
             if (c->getName() == (p->operator[](i)).getName())
             {
                 p->operator[](i) += c;
-                cout << "added to matching chain" << endl;
                 return;
             }
         }
@@ -98,7 +95,6 @@ void addCardToPlayerChain(Player *p, Card *c)
     // if the card doesnt match but there are still more fields
     if (p->getNumChains() < p->getMaxNumChains())
     {
-        std::cout << "there is an empty field" << endl;
         createNewChainAt(p->getNumChains(), p, c);
         return;
     }
@@ -114,7 +110,7 @@ void addCardToPlayerChain(Player *p, Card *c)
         cout << ", 3";
     }
     cout << ")" << endl;
-    p->printFields(cout);
+    p->printFields(cout, false);
     int j;
     cin >> j;
     p += p->operator[](j - 1).sell(); // Sell the chain
@@ -126,7 +122,6 @@ void takeCardFromTradeArea(Player *p, TradeArea *ta)
 {
     if (ta->isEmpty())
     {
-        cout << "Trade Area is empty" << endl;
         return;
     }
     //   If TradeArea is not empty
@@ -170,9 +165,9 @@ int main(int argc, char const *argv[])
     Player *player2 = nullptr;
     vector<Player *> playerArray;
     Deck *pDeck = nullptr;
-    DiscardPile *pDiscardPile = nullptr;
-    TradeArea *pTradeArea = nullptr;
     Table *pTable = nullptr;
+    DiscardPile *pDiscardPile = new DiscardPile();
+    TradeArea *pTradeArea = new TradeArea();
 
     string existingGame;
     cout << "Do you have a saved game? y/n" << endl;
@@ -188,11 +183,11 @@ int main(int argc, char const *argv[])
     {
         // Setup
         string player1Name;
-        cout << "Enter player 1 name: " << endl;
+        cout << "Enter player 1 name: ";
         cin >> player1Name;
 
         string player2Name;
-        cout << "Enter player 2 name: " << endl;
+        cout << "Enter player 2 name: ";
         cin >> player2Name;
 
         player1 = new Player(player1Name);
@@ -211,9 +206,6 @@ int main(int argc, char const *argv[])
             player1->hand += pDeck->draw();
             player2->hand += pDeck->draw();
         }
-
-        pDiscardPile = new DiscardPile();
-        pTradeArea = new TradeArea();
         pTable = new Table(playerArray, pDeck, pTradeArea, pDiscardPile);
     }
 
@@ -252,15 +244,16 @@ int main(int argc, char const *argv[])
             {
                 //    Play the topmost card from Hand.
                 Card *card = player->hand.play();
-                cout << "You played: " << *card << endl;
+                cout << "You must play the first card from your hand.\nYou played: " << *card << endl;
 
                 // Add to a chain
                 addCardToPlayerChain(player, card);
+                cout << *player;
 
                 if (!player->hand.empty())
                 {
                     // if player decides to
-                    cout << "Your top card is: " << *(player->hand.top()) << endl;
+                    cout << "Your top card is: " << (player->hand.top()->getName()) << endl;
                     cout << "Would you like to play this card? (y/n)" << endl;
                     cin >> playACard;
                 }
@@ -273,20 +266,22 @@ int main(int argc, char const *argv[])
                 cout << "Your hand: ";
                 player->printHand(cout, true); // print entire hand
 
-                //   If player decides to
+                // If player decides to
                 cout << "Would you like to discard a card? (y/n)" << endl;
-                string disgardACard;
-                cin >> disgardACard;
-                if (disgardACard[0] == 'y')
+                string discardACard;
+                cin >> discardACard;
+                if (discardACard[0] == 'y')
                 {
 
-                    //    Discard the arbitrary card from the player's hand and place it on the discard pile.
+                    // Discard the arbitrary card from the player's hand and place it on the discard pile.
                     int cardToDiscard;
                     cout << "Which card will you discard? 1 to " << player->hand.size() << endl;
                     cin >> cardToDiscard;
                     *pDiscardPile += player->hand[cardToDiscard - 1]; // We need to POP from players hand
                     cout << "Your hand: ";
                     player->printHand(cout, true); // print entire hand
+                    cout << endl;
+                    cout << "Discard Pile: \n" << *pDiscardPile;
                 }
             }
 
@@ -295,7 +290,7 @@ int main(int argc, char const *argv[])
             for (int i = 0; i < 3; i++)
             {
                 Card *card = pDeck->draw();
-                cout << *card << endl;
+                cout << card->getName() << endl;
                 *pTradeArea += card;
             }
 
@@ -314,6 +309,7 @@ int main(int argc, char const *argv[])
             player->hand += (pDeck->draw());
             player->hand += (pDeck->draw());
             cout << "You drew 2 cards and ended your turn" << endl;
+            cout << *pDiscardPile;
         }
     }
 

@@ -1,17 +1,20 @@
 #include "DiscardPile.h"
 
-DiscardPile::DiscardPile() {
-    std::vector<Card*> cards;
-}
-
 DiscardPile& DiscardPile::operator+=(Card* card) {
-    cards.push_back(card);
+    if (card != nullptr) {
+        std::cout << "Pushing";
+        this->cards.push_back(card);
+        std::cout << "pushed";
+    } else {
+        std::cout << "Nullptr";
+    }
+    
     return *this;
 }
 
 Card* DiscardPile::pickUp() {
     if (!cards.empty()) {
-        Card* front =  cards.front();
+        Card* front = cards.front();
         cards.erase(cards.begin());
         return front;
     }
@@ -26,13 +29,22 @@ Card* DiscardPile::top() const {
 }
 
 void DiscardPile::print(std::ostream& out) const {
-    for (auto& card : this->cards) {
-        card->print(out);
+    if (cards.empty()) {
+        out << "Empty";
+    } else {
+        for (auto& card : this->cards){
+            out << this->cards[0];
+        }
     }
     out << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& out, const DiscardPile& pile) {
-    out << pile.top();
+    if (pile.cards.empty()) {
+        out << "Empty";
+    } else {
+        out << pile.cards[0]->getName();
+    }
+    out << std::endl;
     return out;
 }

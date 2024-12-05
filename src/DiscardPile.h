@@ -6,9 +6,8 @@
 
 class DiscardPile {
 private:
-    std::vector<Card*> cards;
+    std::vector<Card *> cards;
 public:
-    DiscardPile();                          // Constructor
     Card* pickUp();                         // Pick up the top card
     Card* top() const;                      // View the top card without removing
     void print(std::ostream& out) const;    // Print all cards in the pile
